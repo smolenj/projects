@@ -1,0 +1,1 @@
+This is an scientific-like article about using methods of eXplainable Artificial Inteligence (XAI) to inspect chemical factors behind perceived quality of wine. Done in a group of 3 as a part of a bigger project concerning Data Science related topics. 

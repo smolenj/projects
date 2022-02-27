@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<!-- saved from url=(0072)https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html -->
+<html lang="" xml:lang=""><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>1.4 Red wine mystery: using explainable AI to inspect factors behind wine quality | Case Studies</title>
+  <meta name="description" content="Case studies in machine learning.">
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7">
+
+  <meta property="og:title" content="1.4 Red wine mystery: using explainable AI to inspect factors behind wine quality | Case Studies">
+  <meta property="og:type" content="book">
+  
+  <meta property="og:image" content="/images/cover.png">
+  <meta property="og:description" content="Case studies in machine learning.">
+  <meta name="github-repo" content="mini-pw/2021L-WB-Book">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="1.4 Red wine mystery: using explainable AI to inspect factors behind wine quality | Case Studies">
+  
+  <meta name="twitter:description" content="Case studies in machine learning.">
+  <meta name="twitter:image" content="/images/cover.png">
+
+<meta name="author" content="Faculty of Mathematics and Information Science, Warsaw University of Technology">
+
+
+<meta name="date" content="2021-06-16">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="https://mi2-education.github.io/2021L-WB-Book/coronary-artery-disease-is-it-worth-trusting-ml-when-it-comes-to-our-health.html">
+<link rel="next" href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-hotels.html">
+<script src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/header-attrs.js.pobrane"></script>
+<script src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/jquery.min.js.pobrane"></script>
+<link href="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/style.css" rel="stylesheet">
+<link href="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/plugin-table.css" rel="stylesheet">
+<link href="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/plugin-bookdown.css" rel="stylesheet">
+<link href="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/plugin-highlight.css" rel="stylesheet">
+<link href="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/plugin-search.css" rel="stylesheet">
+<link href="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/plugin-fontsettings.css" rel="stylesheet">
+<link href="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/plugin-clipboard.css" rel="stylesheet">
+
+
+
+
+
+
+
+
+
+<link href="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/anchor-sections.css" rel="stylesheet">
+<script src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/anchor-sections.js.pobrane"></script>
+<script src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/kePrint.js.pobrane"></script>
+<link href="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/lightable.css" rel="stylesheet">
+
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/style(1).css" type="text/css">
+<script type="text/javascript" src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/MathJax.js.pobrane"></script><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+
+<body><div id="MathJax_Message" style="display: none;"></div>
+
+
+
+  <div class="book without-animation with-summary   font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary"><div class="book-search" role="search"><label for="search-box" aria-hidden="false" hidden="hidden">Type to search</label><input id="search-box" type="search" class="form-control" placeholder="Type to search (Enter for navigation)" title="Use Enter or the &lt;Down&gt; key to navigate to the next match, or the &lt;Up&gt; key to the previous match"></div>
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://mi2-education.github.io/2021L-WB-Book/"><h3>Case Studies</h3></a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="https://mi2-education.github.io/2021L-WB-Book/index.html"><i class="fa fa-check"></i>Preface</a>
+<ul style="display: none;">
+<li class="chapter" data-level="" data-path="technical-setup.html"><a href="https://mi2-education.github.io/2021L-WB-Book/technical-setup.html"><i class="fa fa-check"></i>Technical Setup</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="explainable-artificial-intelligence-1.html"><a href="https://mi2-education.github.io/2021L-WB-Book/explainable-artificial-intelligence-1.html"><i class="fa fa-check"></i><b>1</b> Explainable Artificial Intelligence 1</a>
+<ul style="display: block;">
+<li class="chapter" data-level="1.1" data-path="xai1-explainable-cards.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-cards.html" title="1.1 Explaining Credit Card Customers churns"><i class="fa fa-check"></i><b>1.1</b> Explaining Credit Card Customers churns</a>
+<ul style="display: none;">
+<li class="chapter" data-level="1.1.1" data-path="xai1-explainable-cards.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-cards.html#introduction-and-motivation"><i class="fa fa-check"></i><b>1.1.1</b> Introduction and Motivation</a></li>
+<li class="chapter" data-level="1.1.2" data-path="xai1-explainable-cards.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-cards.html#methodology"><i class="fa fa-check"></i><b>1.1.2</b> Methodology</a></li>
+<li class="chapter" data-level="1.1.3" data-path="xai1-explainable-cards.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-cards.html#local-explanations"><i class="fa fa-check"></i><b>1.1.3</b> Local explanations</a></li>
+<li class="chapter" data-level="1.1.4" data-path="xai1-explainable-cards.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-cards.html#global-explanations"><i class="fa fa-check"></i><b>1.1.4</b> Global explanations</a></li>
+<li class="chapter" data-level="1.1.5" data-path="xai1-explainable-cards.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-cards.html#summary"><i class="fa fa-check"></i><b>1.1.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="xai-in-real-estate-pricing-a-case-study.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai-in-real-estate-pricing-a-case-study.html" title="1.2 XAI in real estate pricing: A case study"><i class="fa fa-check"></i><b>1.2</b> XAI in real estate pricing: A case study</a>
+<ul style="display: none;">
+<li class="chapter" data-level="1.2.1" data-path="xai-in-real-estate-pricing-a-case-study.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai-in-real-estate-pricing-a-case-study.html#abstract"><i class="fa fa-check"></i><b>1.2.1</b> Abstract</a></li>
+<li class="chapter" data-level="1.2.2" data-path="xai-in-real-estate-pricing-a-case-study.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai-in-real-estate-pricing-a-case-study.html#introduction"><i class="fa fa-check"></i><b>1.2.2</b> Introduction</a></li>
+<li class="chapter" data-level="1.2.3" data-path="xai-in-real-estate-pricing-a-case-study.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai-in-real-estate-pricing-a-case-study.html#related-work"><i class="fa fa-check"></i><b>1.2.3</b> Related Work</a></li>
+<li class="chapter" data-level="1.2.4" data-path="xai-in-real-estate-pricing-a-case-study.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai-in-real-estate-pricing-a-case-study.html#methodology-1"><i class="fa fa-check"></i><b>1.2.4</b> Methodology</a></li>
+<li class="chapter" data-level="1.2.5" data-path="xai-in-real-estate-pricing-a-case-study.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai-in-real-estate-pricing-a-case-study.html#results"><i class="fa fa-check"></i><b>1.2.5</b> Results</a></li>
+<li class="chapter" data-level="1.2.6" data-path="xai-in-real-estate-pricing-a-case-study.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai-in-real-estate-pricing-a-case-study.html#summary-and-conclusions"><i class="fa fa-check"></i><b>1.2.6</b> Summary and conclusions</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="coronary-artery-disease-is-it-worth-trusting-ml-when-it-comes-to-our-health.html"><a href="https://mi2-education.github.io/2021L-WB-Book/coronary-artery-disease-is-it-worth-trusting-ml-when-it-comes-to-our-health.html" title="1.3 Coronary artery disease: Is it worth trusting ML when it comes to our health?"><i class="fa fa-check"></i><b>1.3</b> Coronary artery disease: Is it worth trusting ML when it comes to our health?</a>
+<ul style="display: none;">
+<li class="chapter" data-level="1.3.1" data-path="coronary-artery-disease-is-it-worth-trusting-ml-when-it-comes-to-our-health.html"><a href="https://mi2-education.github.io/2021L-WB-Book/coronary-artery-disease-is-it-worth-trusting-ml-when-it-comes-to-our-health.html#abstract-1"><i class="fa fa-check"></i><b>1.3.1</b> Abstract</a></li>
+<li class="chapter" data-level="1.3.2" data-path="coronary-artery-disease-is-it-worth-trusting-ml-when-it-comes-to-our-health.html"><a href="https://mi2-education.github.io/2021L-WB-Book/coronary-artery-disease-is-it-worth-trusting-ml-when-it-comes-to-our-health.html#introduction-and-motivation-1"><i class="fa fa-check"></i><b>1.3.2</b> Introduction and Motivation</a></li>
+<li class="chapter" data-level="1.3.3" data-path="coronary-artery-disease-is-it-worth-trusting-ml-when-it-comes-to-our-health.html"><a href="https://mi2-education.github.io/2021L-WB-Book/coronary-artery-disease-is-it-worth-trusting-ml-when-it-comes-to-our-health.html#related-work-1"><i class="fa fa-check"></i><b>1.3.3</b> Related Work</a></li>
+<li class="chapter" data-level="1.3.4" data-path="coronary-artery-disease-is-it-worth-trusting-ml-when-it-comes-to-our-health.html"><a href="https://mi2-education.github.io/2021L-WB-Book/coronary-artery-disease-is-it-worth-trusting-ml-when-it-comes-to-our-health.html#methodology-2"><i class="fa fa-check"></i><b>1.3.4</b> Methodology</a></li>
+<li class="chapter" data-level="1.3.5" data-path="coronary-artery-disease-is-it-worth-trusting-ml-when-it-comes-to-our-health.html"><a href="https://mi2-education.github.io/2021L-WB-Book/coronary-artery-disease-is-it-worth-trusting-ml-when-it-comes-to-our-health.html#results-1"><i class="fa fa-check"></i><b>1.3.5</b> Results</a></li>
+<li class="chapter" data-level="1.3.6" data-path="coronary-artery-disease-is-it-worth-trusting-ml-when-it-comes-to-our-health.html"><a href="https://mi2-education.github.io/2021L-WB-Book/coronary-artery-disease-is-it-worth-trusting-ml-when-it-comes-to-our-health.html#summary-and-conclusions-1"><i class="fa fa-check"></i><b>1.3.6</b> Summary and conclusions</a></li>
+</ul></li>
+<li class="chapter active" data-level="1.4" data-path="xai1-explainable-wine.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html" title="1.4 Red wine mystery: using explainable AI to inspect factors behind wine quality"><i class="fa fa-check"></i><b>1.4</b> Red wine mystery: using explainable AI to inspect factors behind wine quality</a>
+<ul style="display: none;">
+<li class="chapter" data-level="1.4.1" data-path="xai1-explainable-wine.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#abstract-2"><i class="fa fa-check"></i><b>1.4.1</b> Abstract</a></li>
+<li class="chapter" data-level="1.4.2" data-path="xai1-explainable-wine.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#introduction-and-motivation-2"><i class="fa fa-check"></i><b>1.4.2</b> Introduction and Motivation</a></li>
+<li class="chapter" data-level="1.4.3" data-path="xai1-explainable-wine.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#methodology-3"><i class="fa fa-check"></i><b>1.4.3</b> Methodology</a></li>
+<li class="chapter" data-level="1.4.4" data-path="xai1-explainable-wine.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#global-explanations-3"><i class="fa fa-check"></i><b>1.4.4</b> Global explanations</a></li>
+<li class="chapter" data-level="1.4.5" data-path="xai1-explainable-wine.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#local-explanations-3"><i class="fa fa-check"></i><b>1.4.5</b> Local explanations</a></li>
+<li class="chapter" data-level="1.4.6" data-path="xai1-explainable-wine.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#confrontation-with-science"><i class="fa fa-check"></i><b>1.4.6</b> Confrontation with science</a></li>
+<li class="chapter" data-level="1.4.7" data-path="xai1-explainable-wine.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#summary-1"><i class="fa fa-check"></i><b>1.4.7</b> Summary</a></li>
+<li class="chapter" data-level="1.4.8" data-path="xai1-explainable-wine.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#conclusions"><i class="fa fa-check"></i><b>1.4.8</b> Conclusions</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="xai1-explainable-hotels.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-hotels.html" title="1.5 Explanatory approach to modeling the risk of hotel booking cancellations"><i class="fa fa-check"></i><b>1.5</b> Explanatory approach to modeling the risk of hotel booking cancellations</a>
+<ul style="display: none;">
+<li class="chapter" data-level="1.5.1" data-path="xai1-explainable-hotels.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-hotels.html#abstract-3"><i class="fa fa-check"></i><b>1.5.1</b> Abstract</a></li>
+<li class="chapter" data-level="1.5.2" data-path="xai1-explainable-hotels.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-hotels.html#introduction-1"><i class="fa fa-check"></i><b>1.5.2</b> Introduction</a></li>
+<li class="chapter" data-level="1.5.3" data-path="xai1-explainable-hotels.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-hotels.html#dataset_models"><i class="fa fa-check"></i><b>1.5.3</b> Dataset and models</a></li>
+<li class="chapter" data-level="1.5.4" data-path="xai1-explainable-hotels.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-hotels.html#local"><i class="fa fa-check"></i><b>1.5.4</b> Local explanations</a></li>
+<li class="chapter" data-level="1.5.5" data-path="xai1-explainable-hotels.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-hotels.html#global-explanations-4"><i class="fa fa-check"></i><b>1.5.5</b> Global explanations</a></li>
+<li class="chapter" data-level="1.5.6" data-path="xai1-explainable-hotels.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-hotels.html#summary-and-conclusions-2"><i class="fa fa-check"></i><b>1.5.6</b> Summary and conclusions</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="explainable-artificial-intelligence-2.html"><a href="https://mi2-education.github.io/2021L-WB-Book/explainable-artificial-intelligence-2.html"><i class="fa fa-check"></i><b>2</b> Explainable Artificial Intelligence 2</a>
+<ul style="display: none;">
+<li class="chapter" data-level="2.1" data-path="xai2-phones.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai2-phones.html"><i class="fa fa-check"></i><b>2.1</b> Does brand has an impact on smartphone prices?</a>
+<ul style="display: none;">
+<li class="chapter" data-level="2.1.1" data-path="xai2-phones.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai2-phones.html#abstract-4"><i class="fa fa-check"></i><b>2.1.1</b> Abstract</a></li>
+<li class="chapter" data-level="2.1.2" data-path="xai2-phones.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai2-phones.html#introduction-motivation-and-related-work"><i class="fa fa-check"></i><b>2.1.2</b> Introduction, motivation and related work</a></li>
+<li class="chapter" data-level="2.1.3" data-path="xai2-phones.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai2-phones.html#methodology-4"><i class="fa fa-check"></i><b>2.1.3</b> Methodology</a></li>
+<li class="chapter" data-level="2.1.4" data-path="xai2-phones.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai2-phones.html#results-2"><i class="fa fa-check"></i><b>2.1.4</b> Results</a></li>
+<li class="chapter" data-level="2.1.5" data-path="xai2-phones.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai2-phones.html#summary-and-conclusion"><i class="fa fa-check"></i><b>2.1.5</b> Summary and conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="xai2-german-credit-data.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai2-german-credit-data.html"><i class="fa fa-check"></i><b>2.2</b> Classifying people as good or bad credit risks</a>
+<ul style="display: none;">
+<li class="chapter" data-level="2.2.1" data-path="xai2-german-credit-data.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai2-german-credit-data.html#abstract-5"><i class="fa fa-check"></i><b>2.2.1</b> Abstract</a></li>
+<li class="chapter" data-level="2.2.2" data-path="xai2-german-credit-data.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai2-german-credit-data.html#introduction-2"><i class="fa fa-check"></i><b>2.2.2</b> Introduction</a></li>
+<li class="chapter" data-level="2.2.3" data-path="xai2-german-credit-data.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai2-german-credit-data.html#dataset-and-models"><i class="fa fa-check"></i><b>2.2.3</b> Dataset and models</a></li>
+<li class="chapter" data-level="2.2.4" data-path="xai2-german-credit-data.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai2-german-credit-data.html#local-explanations-4"><i class="fa fa-check"></i><b>2.2.4</b> Local explanations</a></li>
+<li class="chapter" data-level="2.2.5" data-path="xai2-german-credit-data.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai2-german-credit-data.html#global-explanations-5"><i class="fa fa-check"></i><b>2.2.5</b> Global explanations</a></li>
+<li class="chapter" data-level="2.2.6" data-path="xai2-german-credit-data.html"><a href="https://mi2-education.github.io/2021L-WB-Book/xai2-german-credit-data.html#summary-and-conclusions-3"><i class="fa fa-check"></i><b>2.2.6</b> Summary and conclusions</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="how-to-predict-the-probability-of-subsequent-blood-donations.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-to-predict-the-probability-of-subsequent-blood-donations.html"><i class="fa fa-check"></i><b>2.3</b> How to predict the probability of subsequent blood donations?</a>
+<ul style="display: none;">
+<li class="chapter" data-level="2.3.1" data-path="how-to-predict-the-probability-of-subsequent-blood-donations.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-to-predict-the-probability-of-subsequent-blood-donations.html#abstract-6"><i class="fa fa-check"></i><b>2.3.1</b> Abstract</a></li>
+<li class="chapter" data-level="2.3.2" data-path="how-to-predict-the-probability-of-subsequent-blood-donations.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-to-predict-the-probability-of-subsequent-blood-donations.html#introduction-and-motivation-3"><i class="fa fa-check"></i><b>2.3.2</b> Introduction and motivation</a></li>
+<li class="chapter" data-level="2.3.3" data-path="how-to-predict-the-probability-of-subsequent-blood-donations.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-to-predict-the-probability-of-subsequent-blood-donations.html#related-work-2"><i class="fa fa-check"></i><b>2.3.3</b> Related work</a></li>
+<li class="chapter" data-level="2.3.4" data-path="how-to-predict-the-probability-of-subsequent-blood-donations.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-to-predict-the-probability-of-subsequent-blood-donations.html#data-analysis-and-pre-processing"><i class="fa fa-check"></i><b>2.3.4</b> Data analysis and pre-processing</a></li>
+<li class="chapter" data-level="2.3.5" data-path="how-to-predict-the-probability-of-subsequent-blood-donations.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-to-predict-the-probability-of-subsequent-blood-donations.html#models-preparation-and-selection"><i class="fa fa-check"></i><b>2.3.5</b> Models preparation and selection</a></li>
+<li class="chapter" data-level="2.3.6" data-path="how-to-predict-the-probability-of-subsequent-blood-donations.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-to-predict-the-probability-of-subsequent-blood-donations.html#global-explanations-6"><i class="fa fa-check"></i><b>2.3.6</b> Global explanations</a></li>
+<li class="chapter" data-level="2.3.7" data-path="how-to-predict-the-probability-of-subsequent-blood-donations.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-to-predict-the-probability-of-subsequent-blood-donations.html#local-explanations-5"><i class="fa fa-check"></i><b>2.3.7</b> Local explanations</a></li>
+<li class="chapter" data-level="2.3.8" data-path="how-to-predict-the-probability-of-subsequent-blood-donations.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-to-predict-the-probability-of-subsequent-blood-donations.html#conclusions-and-summary"><i class="fa fa-check"></i><b>2.3.8</b> Conclusions and summary</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="explaining-diabetes-indicators.html"><a href="https://mi2-education.github.io/2021L-WB-Book/explaining-diabetes-indicators.html"><i class="fa fa-check"></i><b>2.4</b> Explaining diabetes indicators</a>
+<ul style="display: none;">
+<li class="chapter" data-level="2.4.1" data-path="explaining-diabetes-indicators.html"><a href="https://mi2-education.github.io/2021L-WB-Book/explaining-diabetes-indicators.html#abstract-7"><i class="fa fa-check"></i><b>2.4.1</b> Abstract</a></li>
+<li class="chapter" data-level="2.4.2" data-path="explaining-diabetes-indicators.html"><a href="https://mi2-education.github.io/2021L-WB-Book/explaining-diabetes-indicators.html#introduction-3"><i class="fa fa-check"></i><b>2.4.2</b> Introduction</a></li>
+<li class="chapter" data-level="2.4.3" data-path="explaining-diabetes-indicators.html"><a href="https://mi2-education.github.io/2021L-WB-Book/explaining-diabetes-indicators.html#methods"><i class="fa fa-check"></i><b>2.4.3</b> Methods</a></li>
+<li class="chapter" data-level="2.4.4" data-path="explaining-diabetes-indicators.html"><a href="https://mi2-education.github.io/2021L-WB-Book/explaining-diabetes-indicators.html#explanations"><i class="fa fa-check"></i><b>2.4.4</b> Explanations</a></li>
+<li class="chapter" data-level="2.4.5" data-path="explaining-diabetes-indicators.html"><a href="https://mi2-education.github.io/2021L-WB-Book/explaining-diabetes-indicators.html#results-3"><i class="fa fa-check"></i><b>2.4.5</b> Results</a></li>
+<li class="chapter" data-level="2.4.6" data-path="explaining-diabetes-indicators.html"><a href="https://mi2-education.github.io/2021L-WB-Book/explaining-diabetes-indicators.html#expert-opinions"><i class="fa fa-check"></i><b>2.4.6</b> Expert opinions</a></li>
+<li class="chapter" data-level="2.4.7" data-path="explaining-diabetes-indicators.html"><a href="https://mi2-education.github.io/2021L-WB-Book/explaining-diabetes-indicators.html#conclusions-1"><i class="fa fa-check"></i><b>2.4.7</b> Conclusions</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="how-the-price-of-the-house-is-influenced-by-neighborhood-xai-methods-for-interpretation-the-black-box-model.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-the-price-of-the-house-is-influenced-by-neighborhood-xai-methods-for-interpretation-the-black-box-model.html"><i class="fa fa-check"></i><b>2.5</b> How the price of the house is influenced by neighborhood? XAI methods for interpretation the black box model</a>
+<ul style="display: none;">
+<li class="chapter" data-level="2.5.1" data-path="how-the-price-of-the-house-is-influenced-by-neighborhood-xai-methods-for-interpretation-the-black-box-model.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-the-price-of-the-house-is-influenced-by-neighborhood-xai-methods-for-interpretation-the-black-box-model.html#abstract-8"><i class="fa fa-check"></i><b>2.5.1</b> Abstract</a></li>
+<li class="chapter" data-level="2.5.2" data-path="how-the-price-of-the-house-is-influenced-by-neighborhood-xai-methods-for-interpretation-the-black-box-model.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-the-price-of-the-house-is-influenced-by-neighborhood-xai-methods-for-interpretation-the-black-box-model.html#introduction-4"><i class="fa fa-check"></i><b>2.5.2</b> Introduction</a></li>
+<li class="chapter" data-level="2.5.3" data-path="how-the-price-of-the-house-is-influenced-by-neighborhood-xai-methods-for-interpretation-the-black-box-model.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-the-price-of-the-house-is-influenced-by-neighborhood-xai-methods-for-interpretation-the-black-box-model.html#literature"><i class="fa fa-check"></i><b>2.5.3</b> Literature</a></li>
+<li class="chapter" data-level="2.5.4" data-path="how-the-price-of-the-house-is-influenced-by-neighborhood-xai-methods-for-interpretation-the-black-box-model.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-the-price-of-the-house-is-influenced-by-neighborhood-xai-methods-for-interpretation-the-black-box-model.html#local-explanations-6"><i class="fa fa-check"></i><b>2.5.4</b> Local explanations</a></li>
+<li class="chapter" data-level="2.5.5" data-path="how-the-price-of-the-house-is-influenced-by-neighborhood-xai-methods-for-interpretation-the-black-box-model.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-the-price-of-the-house-is-influenced-by-neighborhood-xai-methods-for-interpretation-the-black-box-model.html#global-explanations-7"><i class="fa fa-check"></i><b>2.5.5</b> Global explanations</a></li>
+<li class="chapter" data-level="2.5.6" data-path="how-the-price-of-the-house-is-influenced-by-neighborhood-xai-methods-for-interpretation-the-black-box-model.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-the-price-of-the-house-is-influenced-by-neighborhood-xai-methods-for-interpretation-the-black-box-model.html#conclusion"><i class="fa fa-check"></i><b>2.5.6</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="deep-learning-1.html"><a href="https://mi2-education.github.io/2021L-WB-Book/deep-learning-1.html"><i class="fa fa-check"></i><b>3</b> Deep Learning 1</a>
+<ul style="display: none;">
+<li class="chapter" data-level="3.1" data-path="lungnet.html"><a href="https://mi2-education.github.io/2021L-WB-Book/lungnet.html"><i class="fa fa-check"></i><b>3.1</b> LungNet</a>
+<ul style="display: none;">
+<li class="chapter" data-level="3.1.1" data-path="lungnet.html"><a href="https://mi2-education.github.io/2021L-WB-Book/lungnet.html#introduction-5"><i class="fa fa-check"></i><b>3.1.1</b> Introduction</a></li>
+<li class="chapter" data-level="3.1.2" data-path="lungnet.html"><a href="https://mi2-education.github.io/2021L-WB-Book/lungnet.html#data"><i class="fa fa-check"></i><b>3.1.2</b> Data</a></li>
+<li class="chapter" data-level="3.1.3" data-path="lungnet.html"><a href="https://mi2-education.github.io/2021L-WB-Book/lungnet.html#original-model"><i class="fa fa-check"></i><b>3.1.3</b> Original model</a></li>
+<li class="chapter" data-level="3.1.4" data-path="lungnet.html"><a href="https://mi2-education.github.io/2021L-WB-Book/lungnet.html#new-models"><i class="fa fa-check"></i><b>3.1.4</b> New models</a></li>
+<li class="chapter" data-level="3.1.5" data-path="lungnet.html"><a href="https://mi2-education.github.io/2021L-WB-Book/lungnet.html#summary-2"><i class="fa fa-check"></i><b>3.1.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="on-the-reproducibility-of-the-bcdu-net-model.html"><a href="https://mi2-education.github.io/2021L-WB-Book/on-the-reproducibility-of-the-bcdu-net-model.html"><i class="fa fa-check"></i><b>3.2</b> On the reproducibility of the BCDU-Net model</a>
+<ul style="display: none;">
+<li class="chapter" data-level="3.2.1" data-path="on-the-reproducibility-of-the-bcdu-net-model.html"><a href="https://mi2-education.github.io/2021L-WB-Book/on-the-reproducibility-of-the-bcdu-net-model.html#abstract-9"><i class="fa fa-check"></i><b>3.2.1</b> Abstract</a></li>
+<li class="chapter" data-level="3.2.2" data-path="on-the-reproducibility-of-the-bcdu-net-model.html"><a href="https://mi2-education.github.io/2021L-WB-Book/on-the-reproducibility-of-the-bcdu-net-model.html#introduction-6"><i class="fa fa-check"></i><b>3.2.2</b> Introduction</a></li>
+<li class="chapter" data-level="3.2.3" data-path="on-the-reproducibility-of-the-bcdu-net-model.html"><a href="https://mi2-education.github.io/2021L-WB-Book/on-the-reproducibility-of-the-bcdu-net-model.html#reproduction-of-the-results"><i class="fa fa-check"></i><b>3.2.3</b> Reproduction of the results</a></li>
+<li class="chapter" data-level="3.2.4" data-path="on-the-reproducibility-of-the-bcdu-net-model.html"><a href="https://mi2-education.github.io/2021L-WB-Book/on-the-reproducibility-of-the-bcdu-net-model.html#further-experiments"><i class="fa fa-check"></i><b>3.2.4</b> Further experiments</a></li>
+<li class="chapter" data-level="3.2.5" data-path="on-the-reproducibility-of-the-bcdu-net-model.html"><a href="https://mi2-education.github.io/2021L-WB-Book/on-the-reproducibility-of-the-bcdu-net-model.html#other-tools-applied-to-the-model"><i class="fa fa-check"></i><b>3.2.5</b> Other tools applied to the model</a></li>
+<li class="chapter" data-level="3.2.6" data-path="on-the-reproducibility-of-the-bcdu-net-model.html"><a href="https://mi2-education.github.io/2021L-WB-Book/on-the-reproducibility-of-the-bcdu-net-model.html#results-and-conclusions"><i class="fa fa-check"></i><b>3.2.6</b> Results and conclusions</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="an-exploration-of-deepcovidexplainer-explainable-covid-19-diagnosis-from-chest-x-rays.html"><a href="https://mi2-education.github.io/2021L-WB-Book/an-exploration-of-deepcovidexplainer-explainable-covid-19-diagnosis-from-chest-x-rays.html"><i class="fa fa-check"></i><b>3.3</b> An Exploration of DeepCovidExplainer: Explainable COVID-19 Diagnosis from Chest X-rays</a>
+<ul style="display: none;">
+<li class="chapter" data-level="3.3.1" data-path="an-exploration-of-deepcovidexplainer-explainable-covid-19-diagnosis-from-chest-x-rays.html"><a href="https://mi2-education.github.io/2021L-WB-Book/an-exploration-of-deepcovidexplainer-explainable-covid-19-diagnosis-from-chest-x-rays.html#introduction-and-motivation-4"><i class="fa fa-check"></i><b>3.3.1</b> Introduction and motivation <!-- DONE --></a></li>
+<li class="chapter" data-level="3.3.2" data-path="an-exploration-of-deepcovidexplainer-explainable-covid-19-diagnosis-from-chest-x-rays.html"><a href="https://mi2-education.github.io/2021L-WB-Book/an-exploration-of-deepcovidexplainer-explainable-covid-19-diagnosis-from-chest-x-rays.html#related-work-3"><i class="fa fa-check"></i><b>3.3.2</b> Related work</a></li>
+<li class="chapter" data-level="3.3.3" data-path="an-exploration-of-deepcovidexplainer-explainable-covid-19-diagnosis-from-chest-x-rays.html"><a href="https://mi2-education.github.io/2021L-WB-Book/an-exploration-of-deepcovidexplainer-explainable-covid-19-diagnosis-from-chest-x-rays.html#our-work"><i class="fa fa-check"></i><b>3.3.3</b> Our work</a></li>
+<li class="chapter" data-level="3.3.4" data-path="an-exploration-of-deepcovidexplainer-explainable-covid-19-diagnosis-from-chest-x-rays.html"><a href="https://mi2-education.github.io/2021L-WB-Book/an-exploration-of-deepcovidexplainer-explainable-covid-19-diagnosis-from-chest-x-rays.html#conclusions-and-summary-1"><i class="fa fa-check"></i><b>3.3.4</b> Conclusions and summary</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="erscovid.html"><a href="https://mi2-education.github.io/2021L-WB-Book/erscovid.html"><i class="fa fa-check"></i><b>3.4</b> ERSCovid</a>
+<ul style="display: none;">
+<li class="chapter" data-level="3.4.1" data-path="erscovid.html"><a href="https://mi2-education.github.io/2021L-WB-Book/erscovid.html#abstract-10"><i class="fa fa-check"></i><b>3.4.1</b> Abstract</a></li>
+<li class="chapter" data-level="3.4.2" data-path="erscovid.html"><a href="https://mi2-education.github.io/2021L-WB-Book/erscovid.html#problem"><i class="fa fa-check"></i><b>3.4.2</b> Problem</a></li>
+<li class="chapter" data-level="3.4.3" data-path="erscovid.html"><a href="https://mi2-education.github.io/2021L-WB-Book/erscovid.html#erscovid-workflow"><i class="fa fa-check"></i><b>3.4.3</b> ERSCovid workflow</a></li>
+<li class="chapter" data-level="3.4.4" data-path="erscovid.html"><a href="https://mi2-education.github.io/2021L-WB-Book/erscovid.html#data-1"><i class="fa fa-check"></i><b>3.4.4</b> Data</a></li>
+<li class="chapter" data-level="3.4.5" data-path="erscovid.html"><a href="https://mi2-education.github.io/2021L-WB-Book/erscovid.html#training"><i class="fa fa-check"></i><b>3.4.5</b> Training</a></li>
+<li class="chapter" data-level="3.4.6" data-path="erscovid.html"><a href="https://mi2-education.github.io/2021L-WB-Book/erscovid.html#changes-to-original-model"><i class="fa fa-check"></i><b>3.4.6</b> Changes to original model</a></li>
+<li class="chapter" data-level="3.4.7" data-path="erscovid.html"><a href="https://mi2-education.github.io/2021L-WB-Book/erscovid.html#summary-3"><i class="fa fa-check"></i><b>3.4.7</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="reproducing-and-modifying-covid-net.html"><a href="https://mi2-education.github.io/2021L-WB-Book/reproducing-and-modifying-covid-net.html"><i class="fa fa-check"></i><b>3.5</b> Reproducing and modifying COVID-Net</a>
+<ul style="display: none;">
+<li class="chapter" data-level="3.5.1" data-path="reproducing-and-modifying-covid-net.html"><a href="https://mi2-education.github.io/2021L-WB-Book/reproducing-and-modifying-covid-net.html#abstract-11"><i class="fa fa-check"></i><b>3.5.1</b> Abstract</a></li>
+<li class="chapter" data-level="3.5.2" data-path="reproducing-and-modifying-covid-net.html"><a href="https://mi2-education.github.io/2021L-WB-Book/reproducing-and-modifying-covid-net.html#introduction-and-motivation-5"><i class="fa fa-check"></i><b>3.5.2</b> Introduction and motivation</a></li>
+<li class="chapter" data-level="3.5.3" data-path="reproducing-and-modifying-covid-net.html"><a href="https://mi2-education.github.io/2021L-WB-Book/reproducing-and-modifying-covid-net.html#related-work-4"><i class="fa fa-check"></i><b>3.5.3</b> Related work</a></li>
+<li class="chapter" data-level="3.5.4" data-path="reproducing-and-modifying-covid-net.html"><a href="https://mi2-education.github.io/2021L-WB-Book/reproducing-and-modifying-covid-net.html#dataset-4"><i class="fa fa-check"></i><b>3.5.4</b> Dataset</a></li>
+<li class="chapter" data-level="3.5.5" data-path="reproducing-and-modifying-covid-net.html"><a href="https://mi2-education.github.io/2021L-WB-Book/reproducing-and-modifying-covid-net.html#reproducibility"><i class="fa fa-check"></i><b>3.5.5</b> Reproducibility</a></li>
+<li class="chapter" data-level="3.5.6" data-path="reproducing-and-modifying-covid-net.html"><a href="https://mi2-education.github.io/2021L-WB-Book/reproducing-and-modifying-covid-net.html#further-experiments-and-network-modifications"><i class="fa fa-check"></i><b>3.5.6</b> Further experiments and network modifications</a></li>
+<li class="chapter" data-level="3.5.7" data-path="reproducing-and-modifying-covid-net.html"><a href="https://mi2-education.github.io/2021L-WB-Book/reproducing-and-modifying-covid-net.html#summary-4"><i class="fa fa-check"></i><b>3.5.7</b> Summary</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="deep-learning-2.html"><a href="https://mi2-education.github.io/2021L-WB-Book/deep-learning-2.html"><i class="fa fa-check"></i><b>4</b> Deep Learning 2</a>
+<ul style="display: none;">
+<li class="chapter" data-level="4.1" data-path="what-makes-an-article-reproducible-comparison-of-the-fer-paper-and-axondeepseg.html"><a href="https://mi2-education.github.io/2021L-WB-Book/what-makes-an-article-reproducible-comparison-of-the-fer-paper-and-axondeepseg.html"><i class="fa fa-check"></i><b>4.1</b> What makes an article reproducible? Comparison of the FER+ paper and AxonDeepSeg</a>
+<ul style="display: none;">
+<li class="chapter" data-level="4.1.1" data-path="what-makes-an-article-reproducible-comparison-of-the-fer-paper-and-axondeepseg.html"><a href="https://mi2-education.github.io/2021L-WB-Book/what-makes-an-article-reproducible-comparison-of-the-fer-paper-and-axondeepseg.html#abstract-12"><i class="fa fa-check"></i><b>4.1.1</b> Abstract</a></li>
+<li class="chapter" data-level="4.1.2" data-path="what-makes-an-article-reproducible-comparison-of-the-fer-paper-and-axondeepseg.html"><a href="https://mi2-education.github.io/2021L-WB-Book/what-makes-an-article-reproducible-comparison-of-the-fer-paper-and-axondeepseg.html#introduction-7"><i class="fa fa-check"></i><b>4.1.2</b> Introduction</a></li>
+<li class="chapter" data-level="4.1.3" data-path="what-makes-an-article-reproducible-comparison-of-the-fer-paper-and-axondeepseg.html"><a href="https://mi2-education.github.io/2021L-WB-Book/what-makes-an-article-reproducible-comparison-of-the-fer-paper-and-axondeepseg.html#analyzing-the-ferplus-paper"><i class="fa fa-check"></i><b>4.1.3</b> Analyzing the FERPlus paper</a></li>
+<li class="chapter" data-level="4.1.4" data-path="what-makes-an-article-reproducible-comparison-of-the-fer-paper-and-axondeepseg.html"><a href="https://mi2-education.github.io/2021L-WB-Book/what-makes-an-article-reproducible-comparison-of-the-fer-paper-and-axondeepseg.html#reproducibility-analysis"><i class="fa fa-check"></i><b>4.1.4</b> Reproducibility analysis</a></li>
+<li class="chapter" data-level="4.1.5" data-path="what-makes-an-article-reproducible-comparison-of-the-fer-paper-and-axondeepseg.html"><a href="https://mi2-education.github.io/2021L-WB-Book/what-makes-an-article-reproducible-comparison-of-the-fer-paper-and-axondeepseg.html#analyzing-the-axondeepseg-paper"><i class="fa fa-check"></i><b>4.1.5</b> Analyzing the AxonDeepSeg paper</a></li>
+<li class="chapter" data-level="4.1.6" data-path="what-makes-an-article-reproducible-comparison-of-the-fer-paper-and-axondeepseg.html"><a href="https://mi2-education.github.io/2021L-WB-Book/what-makes-an-article-reproducible-comparison-of-the-fer-paper-and-axondeepseg.html#reproducibility-analysis-1"><i class="fa fa-check"></i><b>4.1.6</b> Reproducibility analysis</a></li>
+<li class="chapter" data-level="4.1.7" data-path="what-makes-an-article-reproducible-comparison-of-the-fer-paper-and-axondeepseg.html"><a href="https://mi2-education.github.io/2021L-WB-Book/what-makes-an-article-reproducible-comparison-of-the-fer-paper-and-axondeepseg.html#conclusion-1"><i class="fa fa-check"></i><b>4.1.7</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="can-you-classify-histopathological-data-at-home-reproducing-the-ara-cnn-models-data-and-performance-.html"><a href="https://mi2-education.github.io/2021L-WB-Book/can-you-classify-histopathological-data-at-home-reproducing-the-ara-cnn-models-data-and-performance-.html"><i class="fa fa-check"></i><b>4.2</b> Can you classify histopathological data at home? Reproducing the ARA-CNN model’s data and performance.</a>
+<ul style="display: none;">
+<li class="chapter" data-level="4.2.1" data-path="can-you-classify-histopathological-data-at-home-reproducing-the-ara-cnn-models-data-and-performance-.html"><a href="https://mi2-education.github.io/2021L-WB-Book/can-you-classify-histopathological-data-at-home-reproducing-the-ara-cnn-models-data-and-performance-.html#abstract-13"><i class="fa fa-check"></i><b>4.2.1</b> Abstract</a></li>
+<li class="chapter" data-level="4.2.2" data-path="can-you-classify-histopathological-data-at-home-reproducing-the-ara-cnn-models-data-and-performance-.html"><a href="https://mi2-education.github.io/2021L-WB-Book/can-you-classify-histopathological-data-at-home-reproducing-the-ara-cnn-models-data-and-performance-.html#introduction-8"><i class="fa fa-check"></i><b>4.2.2</b> Introduction</a></li>
+<li class="chapter" data-level="4.2.3" data-path="can-you-classify-histopathological-data-at-home-reproducing-the-ara-cnn-models-data-and-performance-.html"><a href="https://mi2-education.github.io/2021L-WB-Book/can-you-classify-histopathological-data-at-home-reproducing-the-ara-cnn-models-data-and-performance-.html#definition"><i class="fa fa-check"></i><b>4.2.3</b> Definition</a></li>
+<li class="chapter" data-level="4.2.4" data-path="can-you-classify-histopathological-data-at-home-reproducing-the-ara-cnn-models-data-and-performance-.html"><a href="https://mi2-education.github.io/2021L-WB-Book/can-you-classify-histopathological-data-at-home-reproducing-the-ara-cnn-models-data-and-performance-.html#methodology-5"><i class="fa fa-check"></i><b>4.2.4</b> Methodology</a></li>
+<li class="chapter" data-level="4.2.5" data-path="can-you-classify-histopathological-data-at-home-reproducing-the-ara-cnn-models-data-and-performance-.html"><a href="https://mi2-education.github.io/2021L-WB-Book/can-you-classify-histopathological-data-at-home-reproducing-the-ara-cnn-models-data-and-performance-.html#results-4"><i class="fa fa-check"></i><b>4.2.5</b> Results</a></li>
+<li class="chapter" data-level="4.2.6" data-path="can-you-classify-histopathological-data-at-home-reproducing-the-ara-cnn-models-data-and-performance-.html"><a href="https://mi2-education.github.io/2021L-WB-Book/can-you-classify-histopathological-data-at-home-reproducing-the-ara-cnn-models-data-and-performance-.html#summary-and-conclusions-4"><i class="fa fa-check"></i><b>4.2.6</b> Summary and conclusions</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="rethinking-the-u-net-architecture-for-multimodal-biomedical-image-segmentation.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rethinking-the-u-net-architecture-for-multimodal-biomedical-image-segmentation.html"><i class="fa fa-check"></i><b>4.3</b> Rethinking the U-Net architecture for multimodal biomedical image segmentation</a>
+<ul style="display: none;">
+<li class="chapter" data-level="4.3.1" data-path="rethinking-the-u-net-architecture-for-multimodal-biomedical-image-segmentation.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rethinking-the-u-net-architecture-for-multimodal-biomedical-image-segmentation.html#abstrac"><i class="fa fa-check"></i><b>4.3.1</b> Abstrac</a></li>
+<li class="chapter" data-level="4.3.2" data-path="rethinking-the-u-net-architecture-for-multimodal-biomedical-image-segmentation.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rethinking-the-u-net-architecture-for-multimodal-biomedical-image-segmentation.html#what-reproducibility-is"><i class="fa fa-check"></i><b>4.3.2</b> What Reproducibility Is?</a></li>
+<li class="chapter" data-level="4.3.3" data-path="rethinking-the-u-net-architecture-for-multimodal-biomedical-image-segmentation.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rethinking-the-u-net-architecture-for-multimodal-biomedical-image-segmentation.html#first-article-an-improvement-of-data-classification-using-random-multimodel-deep-learning-rmdl"><i class="fa fa-check"></i><b>4.3.3</b> First article (An Improvement of Data Classification Using Random Multimodel Deep Learning (RMDL) )</a></li>
+<li class="chapter" data-level="4.3.4" data-path="rethinking-the-u-net-architecture-for-multimodal-biomedical-image-segmentation.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rethinking-the-u-net-architecture-for-multimodal-biomedical-image-segmentation.html#second-article-multiresunet-rethinking-the-u-net-architecture-for-multimodal-biomedical-image-segmentation"><i class="fa fa-check"></i><b>4.3.4</b> Second article (MultiResUNet : Rethinking the U-Net architecture for multimodal biomedical image segmentation)</a></li>
+<li class="chapter" data-level="4.3.5" data-path="rethinking-the-u-net-architecture-for-multimodal-biomedical-image-segmentation.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rethinking-the-u-net-architecture-for-multimodal-biomedical-image-segmentation.html#conclusion-2"><i class="fa fa-check"></i><b>4.3.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="dl2-rmdl-unet.html"><a href="https://mi2-education.github.io/2021L-WB-Book/dl2-rmdl-unet.html"><i class="fa fa-check"></i><b>4.4</b> The reproducibility analysis of articles covering RMDL and UNet++ architectures churns</a>
+<ul style="display: none;">
+<li class="chapter" data-level="4.4.1" data-path="dl2-rmdl-unet.html"><a href="https://mi2-education.github.io/2021L-WB-Book/dl2-rmdl-unet.html#abstract-14"><i class="fa fa-check"></i><b>4.4.1</b> Abstract</a></li>
+<li class="chapter" data-level="4.4.2" data-path="dl2-rmdl-unet.html"><a href="https://mi2-education.github.io/2021L-WB-Book/dl2-rmdl-unet.html#reproduction"><i class="fa fa-check"></i><b>4.4.2</b> Reproduction</a></li>
+<li class="chapter" data-level="4.4.3" data-path="dl2-rmdl-unet.html"><a href="https://mi2-education.github.io/2021L-WB-Book/dl2-rmdl-unet.html#random-multimodel-deep-learning-for-classification"><i class="fa fa-check"></i><b>4.4.3</b> Random Multimodel Deep Learning for Classification</a></li>
+<li class="chapter" data-level="4.4.4" data-path="dl2-rmdl-unet.html"><a href="https://mi2-education.github.io/2021L-WB-Book/dl2-rmdl-unet.html#a-nested-u-net-architecture-for-medical-image-segmentation"><i class="fa fa-check"></i><b>4.4.4</b> A Nested U-Net Architecture for Medical Image Segmentation</a></li>
+<li class="chapter" data-level="4.4.5" data-path="dl2-rmdl-unet.html"><a href="https://mi2-education.github.io/2021L-WB-Book/dl2-rmdl-unet.html#conclusions-2"><i class="fa fa-check"></i><b>4.4.5</b> Conclusions</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="can-you-trust-science-on-reproduction-in-deep-learning-.html"><a href="https://mi2-education.github.io/2021L-WB-Book/can-you-trust-science-on-reproduction-in-deep-learning-.html"><i class="fa fa-check"></i><b>4.5</b> Can you trust science? On Reproduction in Deep Learning.</a>
+<ul style="display: none;">
+<li class="chapter" data-level="4.5.1" data-path="can-you-trust-science-on-reproduction-in-deep-learning-.html"><a href="https://mi2-education.github.io/2021L-WB-Book/can-you-trust-science-on-reproduction-in-deep-learning-.html#abstract-15"><i class="fa fa-check"></i><b>4.5.1</b> Abstract</a></li>
+<li class="chapter" data-level="4.5.2" data-path="can-you-trust-science-on-reproduction-in-deep-learning-.html"><a href="https://mi2-education.github.io/2021L-WB-Book/can-you-trust-science-on-reproduction-in-deep-learning-.html#introduction-10"><i class="fa fa-check"></i><b>4.5.2</b> Introduction</a></li>
+<li class="chapter" data-level="4.5.3" data-path="can-you-trust-science-on-reproduction-in-deep-learning-.html"><a href="https://mi2-education.github.io/2021L-WB-Book/can-you-trust-science-on-reproduction-in-deep-learning-.html#methodology-6"><i class="fa fa-check"></i><b>4.5.3</b> Methodology</a></li>
+<li class="chapter" data-level="4.5.4" data-path="can-you-trust-science-on-reproduction-in-deep-learning-.html"><a href="https://mi2-education.github.io/2021L-WB-Book/can-you-trust-science-on-reproduction-in-deep-learning-.html#result"><i class="fa fa-check"></i><b>4.5.4</b> Result</a></li>
+<li class="chapter" data-level="4.5.5" data-path="can-you-trust-science-on-reproduction-in-deep-learning-.html"><a href="https://mi2-education.github.io/2021L-WB-Book/can-you-trust-science-on-reproduction-in-deep-learning-.html#discussion"><i class="fa fa-check"></i><b>4.5.5</b> Discussion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="machine-learning-1.html"><a href="https://mi2-education.github.io/2021L-WB-Book/machine-learning-1.html"><i class="fa fa-check"></i><b>5</b> Machine Learning</a>
+<ul style="display: none;">
+<li class="chapter" data-level="5.1" data-path="validation-and-comparison-of-covid-19-mortality-prediction-models-on-multi-source-data.html"><a href="https://mi2-education.github.io/2021L-WB-Book/validation-and-comparison-of-covid-19-mortality-prediction-models-on-multi-source-data.html"><i class="fa fa-check"></i><b>5.1</b> Validation and comparison of COVID-19 mortality prediction models on multi-source data</a>
+<ul style="display: none;">
+<li class="chapter" data-level="5.1.1" data-path="validation-and-comparison-of-covid-19-mortality-prediction-models-on-multi-source-data.html"><a href="https://mi2-education.github.io/2021L-WB-Book/validation-and-comparison-of-covid-19-mortality-prediction-models-on-multi-source-data.html#abstract-16"><i class="fa fa-check"></i><b>5.1.1</b> Abstract</a></li>
+<li class="chapter" data-level="5.1.2" data-path="validation-and-comparison-of-covid-19-mortality-prediction-models-on-multi-source-data.html"><a href="https://mi2-education.github.io/2021L-WB-Book/validation-and-comparison-of-covid-19-mortality-prediction-models-on-multi-source-data.html#introduction-11"><i class="fa fa-check"></i><b>5.1.2</b> Introduction</a></li>
+<li class="chapter" data-level="5.1.3" data-path="validation-and-comparison-of-covid-19-mortality-prediction-models-on-multi-source-data.html"><a href="https://mi2-education.github.io/2021L-WB-Book/validation-and-comparison-of-covid-19-mortality-prediction-models-on-multi-source-data.html#data-description-1"><i class="fa fa-check"></i><b>5.1.3</b> Data description</a></li>
+<li class="chapter" data-level="5.1.4" data-path="validation-and-comparison-of-covid-19-mortality-prediction-models-on-multi-source-data.html"><a href="https://mi2-education.github.io/2021L-WB-Book/validation-and-comparison-of-covid-19-mortality-prediction-models-on-multi-source-data.html#comparison-of-the-models"><i class="fa fa-check"></i><b>5.1.4</b> Comparison of the models</a></li>
+<li class="chapter" data-level="5.1.5" data-path="validation-and-comparison-of-covid-19-mortality-prediction-models-on-multi-source-data.html"><a href="https://mi2-education.github.io/2021L-WB-Book/validation-and-comparison-of-covid-19-mortality-prediction-models-on-multi-source-data.html#conclusion-3"><i class="fa fa-check"></i><b>5.1.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="one-model-to-fit-them-all-covid-19-survival-prediction-using-multinational-data.html"><a href="https://mi2-education.github.io/2021L-WB-Book/one-model-to-fit-them-all-covid-19-survival-prediction-using-multinational-data.html"><i class="fa fa-check"></i><b>5.2</b> One model to fit them all: COVID-19 survival prediction using multinational data</a>
+<ul style="display: none;">
+<li class="chapter" data-level="5.2.1" data-path="one-model-to-fit-them-all-covid-19-survival-prediction-using-multinational-data.html"><a href="https://mi2-education.github.io/2021L-WB-Book/one-model-to-fit-them-all-covid-19-survival-prediction-using-multinational-data.html#abstract-17"><i class="fa fa-check"></i><b>5.2.1</b> Abstract</a></li>
+<li class="chapter" data-level="5.2.2" data-path="one-model-to-fit-them-all-covid-19-survival-prediction-using-multinational-data.html"><a href="https://mi2-education.github.io/2021L-WB-Book/one-model-to-fit-them-all-covid-19-survival-prediction-using-multinational-data.html#introduction-12"><i class="fa fa-check"></i><b>5.2.2</b> Introduction</a></li>
+<li class="chapter" data-level="5.2.3" data-path="one-model-to-fit-them-all-covid-19-survival-prediction-using-multinational-data.html"><a href="https://mi2-education.github.io/2021L-WB-Book/one-model-to-fit-them-all-covid-19-survival-prediction-using-multinational-data.html#data-sources"><i class="fa fa-check"></i><b>5.2.3</b> Data sources</a></li>
+<li class="chapter" data-level="5.2.4" data-path="one-model-to-fit-them-all-covid-19-survival-prediction-using-multinational-data.html"><a href="https://mi2-education.github.io/2021L-WB-Book/one-model-to-fit-them-all-covid-19-survival-prediction-using-multinational-data.html#model-building"><i class="fa fa-check"></i><b>5.2.4</b> Model building</a></li>
+<li class="chapter" data-level="5.2.5" data-path="one-model-to-fit-them-all-covid-19-survival-prediction-using-multinational-data.html"><a href="https://mi2-education.github.io/2021L-WB-Book/one-model-to-fit-them-all-covid-19-survival-prediction-using-multinational-data.html#discussion-1"><i class="fa fa-check"></i><b>5.2.5</b> Discussion</a></li>
+<li class="chapter" data-level="5.2.6" data-path="one-model-to-fit-them-all-covid-19-survival-prediction-using-multinational-data.html"><a href="https://mi2-education.github.io/2021L-WB-Book/one-model-to-fit-them-all-covid-19-survival-prediction-using-multinational-data.html#summary-6"><i class="fa fa-check"></i><b>5.2.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="transparent-machine-learning-to-support-predicting-covid-19-infection-risk-based-on-chronic-diseases.html"><a href="https://mi2-education.github.io/2021L-WB-Book/transparent-machine-learning-to-support-predicting-covid-19-infection-risk-based-on-chronic-diseases.html"><i class="fa fa-check"></i><b>5.3</b> Transparent machine learning to support predicting COVID-19 infection risk based on chronic diseases</a>
+<ul style="display: none;">
+<li class="chapter" data-level="5.3.1" data-path="transparent-machine-learning-to-support-predicting-covid-19-infection-risk-based-on-chronic-diseases.html"><a href="https://mi2-education.github.io/2021L-WB-Book/transparent-machine-learning-to-support-predicting-covid-19-infection-risk-based-on-chronic-diseases.html#abstract-18"><i class="fa fa-check"></i><b>5.3.1</b> Abstract</a></li>
+<li class="chapter" data-level="5.3.2" data-path="transparent-machine-learning-to-support-predicting-covid-19-infection-risk-based-on-chronic-diseases.html"><a href="https://mi2-education.github.io/2021L-WB-Book/transparent-machine-learning-to-support-predicting-covid-19-infection-risk-based-on-chronic-diseases.html#introduction-13"><i class="fa fa-check"></i><b>5.3.2</b> Introduction</a></li>
+<li class="chapter" data-level="5.3.3" data-path="transparent-machine-learning-to-support-predicting-covid-19-infection-risk-based-on-chronic-diseases.html"><a href="https://mi2-education.github.io/2021L-WB-Book/transparent-machine-learning-to-support-predicting-covid-19-infection-risk-based-on-chronic-diseases.html#flaws"><i class="fa fa-check"></i><b>5.3.3</b> Flaws</a></li>
+<li class="chapter" data-level="5.3.4" data-path="transparent-machine-learning-to-support-predicting-covid-19-infection-risk-based-on-chronic-diseases.html"><a href="https://mi2-education.github.io/2021L-WB-Book/transparent-machine-learning-to-support-predicting-covid-19-infection-risk-based-on-chronic-diseases.html#improvements"><i class="fa fa-check"></i><b>5.3.4</b> Improvements</a></li>
+<li class="chapter" data-level="5.3.5" data-path="transparent-machine-learning-to-support-predicting-covid-19-infection-risk-based-on-chronic-diseases.html"><a href="https://mi2-education.github.io/2021L-WB-Book/transparent-machine-learning-to-support-predicting-covid-19-infection-risk-based-on-chronic-diseases.html#transparent-machine-learning"><i class="fa fa-check"></i><b>5.3.5</b> Transparent Machine Learning</a></li>
+<li class="chapter" data-level="5.3.6" data-path="transparent-machine-learning-to-support-predicting-covid-19-infection-risk-based-on-chronic-diseases.html"><a href="https://mi2-education.github.io/2021L-WB-Book/transparent-machine-learning-to-support-predicting-covid-19-infection-risk-based-on-chronic-diseases.html#application"><i class="fa fa-check"></i><b>5.3.6</b> Application</a></li>
+<li class="chapter" data-level="5.3.7" data-path="transparent-machine-learning-to-support-predicting-covid-19-infection-risk-based-on-chronic-diseases.html"><a href="https://mi2-education.github.io/2021L-WB-Book/transparent-machine-learning-to-support-predicting-covid-19-infection-risk-based-on-chronic-diseases.html#conclusions-3"><i class="fa fa-check"></i><b>5.3.7</b> Conclusions</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="comparison-of-neural-networks-and-tree-based-models-in-the-clinical-prediction-of-the-course-of-covid-19-illness.html"><a href="https://mi2-education.github.io/2021L-WB-Book/comparison-of-neural-networks-and-tree-based-models-in-the-clinical-prediction-of-the-course-of-covid-19-illness.html"><i class="fa fa-check"></i><b>5.4</b> Comparison of neural networks and tree-based models in the clinical prediction of the course of COVID-19 illness</a>
+<ul style="display: none;">
+<li class="chapter" data-level="5.4.1" data-path="comparison-of-neural-networks-and-tree-based-models-in-the-clinical-prediction-of-the-course-of-covid-19-illness.html"><a href="https://mi2-education.github.io/2021L-WB-Book/comparison-of-neural-networks-and-tree-based-models-in-the-clinical-prediction-of-the-course-of-covid-19-illness.html#abstract-19"><i class="fa fa-check"></i><b>5.4.1</b> Abstract</a></li>
+<li class="chapter" data-level="5.4.2" data-path="comparison-of-neural-networks-and-tree-based-models-in-the-clinical-prediction-of-the-course-of-covid-19-illness.html"><a href="https://mi2-education.github.io/2021L-WB-Book/comparison-of-neural-networks-and-tree-based-models-in-the-clinical-prediction-of-the-course-of-covid-19-illness.html#introduction-14"><i class="fa fa-check"></i><b>5.4.2</b> Introduction</a></li>
+<li class="chapter" data-level="5.4.3" data-path="comparison-of-neural-networks-and-tree-based-models-in-the-clinical-prediction-of-the-course-of-covid-19-illness.html"><a href="https://mi2-education.github.io/2021L-WB-Book/comparison-of-neural-networks-and-tree-based-models-in-the-clinical-prediction-of-the-course-of-covid-19-illness.html#methods-2"><i class="fa fa-check"></i><b>5.4.3</b> Methods</a></li>
+<li class="chapter" data-level="5.4.4" data-path="comparison-of-neural-networks-and-tree-based-models-in-the-clinical-prediction-of-the-course-of-covid-19-illness.html"><a href="https://mi2-education.github.io/2021L-WB-Book/comparison-of-neural-networks-and-tree-based-models-in-the-clinical-prediction-of-the-course-of-covid-19-illness.html#results-8"><i class="fa fa-check"></i><b>5.4.4</b> Results</a></li>
+<li class="chapter" data-level="5.4.5" data-path="comparison-of-neural-networks-and-tree-based-models-in-the-clinical-prediction-of-the-course-of-covid-19-illness.html"><a href="https://mi2-education.github.io/2021L-WB-Book/comparison-of-neural-networks-and-tree-based-models-in-the-clinical-prediction-of-the-course-of-covid-19-illness.html#discussion-2"><i class="fa fa-check"></i><b>5.4.5</b> Discussion</a></li>
+<li class="chapter" data-level="5.4.6" data-path="comparison-of-neural-networks-and-tree-based-models-in-the-clinical-prediction-of-the-course-of-covid-19-illness.html"><a href="https://mi2-education.github.io/2021L-WB-Book/comparison-of-neural-networks-and-tree-based-models-in-the-clinical-prediction-of-the-course-of-covid-19-illness.html#source-code"><i class="fa fa-check"></i><b>5.4.6</b> Source code</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="rashomonml.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rashomonml.html"><i class="fa fa-check"></i><b>6</b> RashomonML</a>
+<ul style="display: none;">
+<li class="chapter" data-level="6.1" data-path="how-to-compare-many-good-machine-learning-models.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-to-compare-many-good-machine-learning-models.html"><i class="fa fa-check"></i><b>6.1</b> How to compare many good machine learning models?</a>
+<ul style="display: none;">
+<li class="chapter" data-level="6.1.1" data-path="how-to-compare-many-good-machine-learning-models.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-to-compare-many-good-machine-learning-models.html#abstract-20"><i class="fa fa-check"></i><b>6.1.1</b> Abstract</a></li>
+<li class="chapter" data-level="6.1.2" data-path="how-to-compare-many-good-machine-learning-models.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-to-compare-many-good-machine-learning-models.html#introduction-15"><i class="fa fa-check"></i><b>6.1.2</b> Introduction</a></li>
+<li class="chapter" data-level="6.1.3" data-path="how-to-compare-many-good-machine-learning-models.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-to-compare-many-good-machine-learning-models.html#literature-review"><i class="fa fa-check"></i><b>6.1.3</b> Literature review</a></li>
+<li class="chapter" data-level="6.1.4" data-path="how-to-compare-many-good-machine-learning-models.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-to-compare-many-good-machine-learning-models.html#methodology-7"><i class="fa fa-check"></i><b>6.1.4</b> Methodology</a></li>
+<li class="chapter" data-level="6.1.5" data-path="how-to-compare-many-good-machine-learning-models.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-to-compare-many-good-machine-learning-models.html#results-9"><i class="fa fa-check"></i><b>6.1.5</b> Results</a></li>
+<li class="chapter" data-level="6.1.6" data-path="how-to-compare-many-good-machine-learning-models.html"><a href="https://mi2-education.github.io/2021L-WB-Book/how-to-compare-many-good-machine-learning-models.html#summary-and-conclusions-5"><i class="fa fa-check"></i><b>6.1.6</b> Summary and conclusions</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="analysis-of-models-predicting-death-probability-during-icu-stays.html"><a href="https://mi2-education.github.io/2021L-WB-Book/analysis-of-models-predicting-death-probability-during-icu-stays.html"><i class="fa fa-check"></i><b>6.2</b> Analysis of models predicting death probability during ICU stays</a>
+<ul style="display: none;">
+<li class="chapter" data-level="6.2.1" data-path="analysis-of-models-predicting-death-probability-during-icu-stays.html"><a href="https://mi2-education.github.io/2021L-WB-Book/analysis-of-models-predicting-death-probability-during-icu-stays.html#abstract-21"><i class="fa fa-check"></i><b>6.2.1</b> Abstract</a></li>
+<li class="chapter" data-level="6.2.2" data-path="analysis-of-models-predicting-death-probability-during-icu-stays.html"><a href="https://mi2-education.github.io/2021L-WB-Book/analysis-of-models-predicting-death-probability-during-icu-stays.html#introduction-16"><i class="fa fa-check"></i><b>6.2.2</b> Introduction</a></li>
+<li class="chapter" data-level="6.2.3" data-path="analysis-of-models-predicting-death-probability-during-icu-stays.html"><a href="https://mi2-education.github.io/2021L-WB-Book/analysis-of-models-predicting-death-probability-during-icu-stays.html#literature-review-1"><i class="fa fa-check"></i><b>6.2.3</b> Literature review</a></li>
+<li class="chapter" data-level="6.2.4" data-path="analysis-of-models-predicting-death-probability-during-icu-stays.html"><a href="https://mi2-education.github.io/2021L-WB-Book/analysis-of-models-predicting-death-probability-during-icu-stays.html#methodology-8"><i class="fa fa-check"></i><b>6.2.4</b> Methodology</a></li>
+<li class="chapter" data-level="6.2.5" data-path="analysis-of-models-predicting-death-probability-during-icu-stays.html"><a href="https://mi2-education.github.io/2021L-WB-Book/analysis-of-models-predicting-death-probability-during-icu-stays.html#results-10"><i class="fa fa-check"></i><b>6.2.5</b> Results</a></li>
+<li class="chapter" data-level="6.2.6" data-path="analysis-of-models-predicting-death-probability-during-icu-stays.html"><a href="https://mi2-education.github.io/2021L-WB-Book/analysis-of-models-predicting-death-probability-during-icu-stays.html#summary-7"><i class="fa fa-check"></i><b>6.2.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="rashomon-ml-with-addition-of-dimensional-reduction.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rashomon-ml-with-addition-of-dimensional-reduction.html"><i class="fa fa-check"></i><b>6.3</b> Rashomon ML with addition of dimensional reduction</a>
+<ul style="display: none;">
+<li class="chapter" data-level="6.3.1" data-path="rashomon-ml-with-addition-of-dimensional-reduction.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rashomon-ml-with-addition-of-dimensional-reduction.html#abstract-22"><i class="fa fa-check"></i><b>6.3.1</b> Abstract</a></li>
+<li class="chapter" data-level="6.3.2" data-path="rashomon-ml-with-addition-of-dimensional-reduction.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rashomon-ml-with-addition-of-dimensional-reduction.html#introduction-and-related-works"><i class="fa fa-check"></i><b>6.3.2</b> Introduction and related works</a></li>
+<li class="chapter" data-level="6.3.3" data-path="rashomon-ml-with-addition-of-dimensional-reduction.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rashomon-ml-with-addition-of-dimensional-reduction.html#methodology-9"><i class="fa fa-check"></i><b>6.3.3</b> Methodology</a></li>
+<li class="chapter" data-level="6.3.4" data-path="rashomon-ml-with-addition-of-dimensional-reduction.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rashomon-ml-with-addition-of-dimensional-reduction.html#results-11"><i class="fa fa-check"></i><b>6.3.4</b> Results</a></li>
+<li class="chapter" data-level="6.3.5" data-path="rashomon-ml-with-addition-of-dimensional-reduction.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rashomon-ml-with-addition-of-dimensional-reduction.html#summary-and-conclusions-6"><i class="fa fa-check"></i><b>6.3.5</b> Summary and conclusions</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="rashomon-sets-on-death-prediction-xgb-models-using-mimic-iii-database.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rashomon-sets-on-death-prediction-xgb-models-using-mimic-iii-database.html"><i class="fa fa-check"></i><b>6.4</b> Rashomon sets on death prediction XGB models using MIMIC-III database</a>
+<ul style="display: none;">
+<li class="chapter" data-level="6.4.1" data-path="rashomon-sets-on-death-prediction-xgb-models-using-mimic-iii-database.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rashomon-sets-on-death-prediction-xgb-models-using-mimic-iii-database.html#abstract-23"><i class="fa fa-check"></i><b>6.4.1</b> Abstract</a></li>
+<li class="chapter" data-level="6.4.2" data-path="rashomon-sets-on-death-prediction-xgb-models-using-mimic-iii-database.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rashomon-sets-on-death-prediction-xgb-models-using-mimic-iii-database.html#related-works-and-introduction"><i class="fa fa-check"></i><b>6.4.2</b> Related works and introduction</a></li>
+<li class="chapter" data-level="6.4.3" data-path="rashomon-sets-on-death-prediction-xgb-models-using-mimic-iii-database.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rashomon-sets-on-death-prediction-xgb-models-using-mimic-iii-database.html#methodology-10"><i class="fa fa-check"></i><b>6.4.3</b> Methodology</a></li>
+<li class="chapter" data-level="6.4.4" data-path="rashomon-sets-on-death-prediction-xgb-models-using-mimic-iii-database.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rashomon-sets-on-death-prediction-xgb-models-using-mimic-iii-database.html#results-12"><i class="fa fa-check"></i><b>6.4.4</b> Results</a></li>
+<li class="chapter" data-level="6.4.5" data-path="rashomon-sets-on-death-prediction-xgb-models-using-mimic-iii-database.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rashomon-sets-on-death-prediction-xgb-models-using-mimic-iii-database.html#conclusions-4"><i class="fa fa-check"></i><b>6.4.5</b> Conclusions</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="rashomon-sets-of-in-hospital-mortality-prediction-random-forest-models.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rashomon-sets-of-in-hospital-mortality-prediction-random-forest-models.html"><i class="fa fa-check"></i><b>6.5</b> Rashomon sets of in-hospital mortality prediction random forest models</a>
+<ul style="display: none;">
+<li class="chapter" data-level="6.5.1" data-path="rashomon-sets-of-in-hospital-mortality-prediction-random-forest-models.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rashomon-sets-of-in-hospital-mortality-prediction-random-forest-models.html#abstract-24"><i class="fa fa-check"></i><b>6.5.1</b> Abstract</a></li>
+<li class="chapter" data-level="6.5.2" data-path="rashomon-sets-of-in-hospital-mortality-prediction-random-forest-models.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rashomon-sets-of-in-hospital-mortality-prediction-random-forest-models.html#introduction-17"><i class="fa fa-check"></i><b>6.5.2</b> Introduction</a></li>
+<li class="chapter" data-level="6.5.3" data-path="rashomon-sets-of-in-hospital-mortality-prediction-random-forest-models.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rashomon-sets-of-in-hospital-mortality-prediction-random-forest-models.html#related-work-5"><i class="fa fa-check"></i><b>6.5.3</b> Related work</a></li>
+<li class="chapter" data-level="6.5.4" data-path="rashomon-sets-of-in-hospital-mortality-prediction-random-forest-models.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rashomon-sets-of-in-hospital-mortality-prediction-random-forest-models.html#mimic-iii-dataset"><i class="fa fa-check"></i><b>6.5.4</b> MIMIC-III Dataset</a></li>
+<li class="chapter" data-level="6.5.5" data-path="rashomon-sets-of-in-hospital-mortality-prediction-random-forest-models.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rashomon-sets-of-in-hospital-mortality-prediction-random-forest-models.html#rashomon-sets"><i class="fa fa-check"></i><b>6.5.5</b> Rashomon Sets</a></li>
+<li class="chapter" data-level="6.5.6" data-path="rashomon-sets-of-in-hospital-mortality-prediction-random-forest-models.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rashomon-sets-of-in-hospital-mortality-prediction-random-forest-models.html#results-13"><i class="fa fa-check"></i><b>6.5.6</b> Results</a></li>
+<li class="chapter" data-level="6.5.7" data-path="rashomon-sets-of-in-hospital-mortality-prediction-random-forest-models.html"><a href="https://mi2-education.github.io/2021L-WB-Book/rashomon-sets-of-in-hospital-mortality-prediction-random-forest-models.html#conclusion-4"><i class="fa fa-check"></i><b>6.5.7</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://bookdown.org/" target="_blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body fixed">
+      <div class="body-inner">
+        <div class="book-header fixed" role="navigation" style="background-color: rgb(255, 255, 255);">
+          <a class="btn pull-left js-toolbar-action" aria-label="Toggle Sidebar" title="Toggle Sidebar" href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#"><i class="fa fa-align-justify"></i></a><a class="btn pull-left js-toolbar-action" aria-label="Search" title="Search" href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#"><i class="fa fa-search"></i></a><div class="dropdown pull-right  js-toolbar-action"><a class="btn toggle-dropdown" aria-label="Share" title="Share" href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#"><i class="fa fa-share-alt"></i></a><div class="dropdown-menu dropdown-left"><div class="dropdown-caret"><span class="caret-outer"></span><span class="caret-inner"></span></div><div class="buttons"><button class="button size-5 ">Facebook</button><button class="button size-5 ">Twitter</button><button class="button size-5 ">LinkedIn</button><button class="button size-5 ">Weibo</button><button class="button size-5 ">Instapaper</button></div></div></div><a class="btn pull-right js-toolbar-action" aria-label="Github" title="Github" href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#"><i class="fa fa-github"></i></a><a class="btn pull-right js-toolbar-action" aria-label="Twitter" title="Twitter" href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#"><i class="fa fa-twitter"></i></a><div class="dropdown pull-left font-settings js-toolbar-action"><a class="btn toggle-dropdown" aria-label="Font Settings" title="Font Settings" href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#"><i class="fa fa-font"></i></a><div class="dropdown-menu dropdown-right"><div class="dropdown-caret"><span class="caret-outer"></span><span class="caret-inner"></span></div><div class="buttons"><button class="button size-2 font-reduce">A</button><button class="button size-2 font-enlarge">A</button></div><div class="buttons"><button class="button size-2 ">Serif</button><button class="button size-2 ">Sans</button></div><div class="buttons"><button class="button size-3 ">White</button><button class="button size-3 ">Sepia</button><button class="button size-3 ">Night</button></div></div></div><a class="btn pull-left js-toolbar-action" aria-label="Edit" title="Edit" href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#"><i class="fa fa-edit"></i></a><div class="dropdown pull-left  js-toolbar-action"><a class="btn toggle-dropdown" aria-label="Download" title="Download" href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#"><i class="fa fa-download"></i></a><div class="dropdown-menu dropdown-right"><div class="dropdown-caret"><span class="caret-outer"></span><span class="caret-inner"></span></div><div class="buttons"><button class="button size-1 ">PDF</button></div><div class="buttons"><button class="button size-1 ">EPUB</button></div></div></div><a class="btn pull-left js-toolbar-action" aria-label="Information about the toolbar" title="Information about the toolbar" href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#"><i class="fa fa-info"></i></a><h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="https://mi2-education.github.io/2021L-WB-Book/">Case Studies</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="xai1-explainable-wine" class="section level2" number="1.4">
+<h2 class="hasAnchor"><span class="header-section-number">1.4</span> Red wine mystery: using explainable AI to inspect factors behind wine quality<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#xai1-explainable-wine" class="anchor-section"></a></h2>
+<p><em>Authors: Jakub Kosterna, Bartosz Siński, Jan Smoleń (Warsaw University of Technology)</em></p>
+<div id="abstract-2" class="section level3" number="1.4.1">
+<h3 class="hasAnchor"><span class="header-section-number">1.4.1</span> Abstract<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#abstract-2" class="anchor-section"></a></h3>
+<p>Wine is one of the most widespread and culturally significant drinks in the world. However, the factors determining its quality remain a mystery to the absolute majority of people. There are many variables contributing to the final effect and it seems unclear which ones are crucial in making some wines better than the others. In this paper, we have looked at this issue from a fresh perspective using Red Wine Quality from Kaggle community dataset. Much to our initial surprise, despite the fact that a dozen or so chemical factors were taken into account, there is one that stands out and seems to be the main predictor of the drink’s quality - it is alcohol. The study used four black box models interpreted through modern methods of explainable artificial intelligence to explore the subject.</p>
+</div>
+<div id="introduction-and-motivation-2" class="section level3" number="1.4.2">
+<h3 class="hasAnchor"><span class="header-section-number">1.4.2</span> Introduction and Motivation<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#introduction-and-motivation-2" class="anchor-section"></a></h3>
+<p>Term ‘glass box models’ refers to interpretable machine learning models - user can explicitly see how they work, and follow the steps from inputs to outputs. The situation is completely different in the case of the very advanced black box models. The goal of explainable machine learning is to allow a human user to inspect the factors behind results given by the model <span class="citation">(<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#ref-dalex" role="doc-biblioref">Baniecki et al. 2020a</a>)</span>.</p>
+<p>There are numerous projects on the Internet that look at the Red Wine Quality dataset from different perspectives. However, due to the nuanced nature of the problem, many of them don’t allow us to draw any constructive conclusions concerning the impact that various physicochemical properties have on the quality of wine. Our goal was to implement XAI solutions in terms of the analysis of the above-mentioned dataset and to confront results with previous research and literature on the subject.</p>
+<p>In this study, we will be taking a look at all the variables included in our dataset, while paying some special attention to one that seems to be standing out the most - the alcohol content. It is also the one that is the most recognizable to an average consumer and, in contrast to other physicochemical properties, is easily found on every wine label.</p>
+<p>While analysing the results, we have to keep in mind the obvious limitations associated with the subject. Not only is the perception of the quality of wine an inherently subjective property, but it is also affected by factors not included in the data, such as the color of the wine or the temperature in which the drink was served.</p>
+</div>
+<div id="methodology-3" class="section level3" number="1.4.3">
+<h3 class="hasAnchor"><span class="header-section-number">1.4.3</span> Methodology<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#methodology-3" class="anchor-section"></a></h3>
+<div id="dataset-2" class="section level4" number="1.4.3.1">
+<h4 class="hasAnchor"><span class="header-section-number">1.4.3.1</span> Dataset<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#dataset-2" class="anchor-section"></a></h4>
+<p>The original collection contains 1 600 observations, each representing one Portuguese Vinho Verde of the red variety. It is a proper to analyze and respected set, as evidenced by its verification, multiple use, as well as a very high rating of “usability” of 8.8 on the website. It consists of eleven predictors:</p>
+<ul>
+<li><em>fixed acidity</em> - most acids involved with wine or fixed or nonvolatile (do not evaporate readily)</li>
+<li><em>volatile acidity</em> - the amount of acetic acid in wine, which at too high of levels can lead to an unpleasant, vinegar taste</li>
+<li><em>citric acid</em> - found in small quantities, citric acid can add ‘freshness’ and flavor to wines</li>
+<li><em>residual sugar</em> - the amount of sugar remaining after fermentation stops, it’s rare to find wines with less than 1 gram/liter and wines with greater than 45 grams/liter are considered sweet</li>
+<li><em>chlorides</em> - the amount of salt in the wine</li>
+<li><em>free sulfur dioxide</em> - the free form of SO2 exists in equilibrium between molecular SO2 (as a dissolved gas) and bisulfite ion</li>
+<li><em>total sulfur dioxide</em> - amount of free and bound forms of S02</li>
+<li><em>density</em> - the density of water is close to that of water depending on the percent alcohol and sugar content</li>
+<li><em>pH</em> - describes how acidic or basic a wine is on a scale from 0 (very acidic) to 14 (very basic)</li>
+<li><em>sulphates</em> - a wine additive which can contribute to sulfur dioxide gas (S02) levels, wich acts as an antimicrobial and antioxidant</li>
+<li><em>alcohol</em> - alcohol by volume percentage</li>
+</ul>
+<p>The decision variable was originally <em>quality</em> - the median rating of an assembly of minimum 3 experts, who made their classification on a scale from 0 to 10. Due to the capabilities of the analyzed XAI tools, our team decided to make it a binary classification problem, assigning the wines rated &lt;= 5 value 0, and others - value 1. It resulted in an intuitive “bad / good” wine classification, which gave us 855 “good” and 744 “bad” wines.</p>
+<div class="figure" style="text-align: center"><span id="fig:targetCounts"></span>
+<img src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/1-4-01targetCounts.png" alt="Distribution of target before and after transformation" width="700">
+<p class="caption">
+Figure 1.59: Distribution of target before and after transformation
+</p>
+</div>
+</div>
+<div id="machine-learning-algorithms-used" class="section level4" number="1.4.3.2">
+<h4 class="hasAnchor"><span class="header-section-number">1.4.3.2</span> Machine learning algorithms used<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#machine-learning-algorithms-used" class="anchor-section"></a></h4>
+<p>In order to look at the nature of this data, four well-known algorithms have been trained from data divided into: 1199 observations for the training set and 400 for the test set.</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>XGBoost</strong> (<em>gbm</em>) - powerful modern method based on <em>AdaBoost</em> and gradient boosting, imported from <em>xgboost</em> package, with tuned hyperparameters using the randomized search method from <em>sklearn</em> package, with the best values obtained: <em>min_child_weight</em> - 1, <em>max_depth</em> - 12, <em>learning_rate</em> - 0.05, <em>gamma</em> - 0.2 and <em>colsample_bytree</em> - 0.7</p></li>
+<li><p><strong>Support Vector Machine</strong> (<em>svm</em>) - algorithm, in which we plot each data item as a point in n-dimensional space (where n is number of features) with the value of each feature being the value of a particular coordinate. Then, we perform classification by finding the hyper-plane that differentiates the two classes very well; imported from <em>sklearn</em> package, with tuned hyperparameters using the grid search method from <em>sklearn</em> package, with the best values obteined: <em>C</em> - 10000, <em>gamma</em> - 0.0001 and <em>kernel</em> - rbf</p></li>
+<li><p><strong>Random Forest</strong> (<em>rfm</em>) - method building multiple decision trees and merges them together to get a more accurate and stable prediction; imported from <em>sklearn</em> package, with tuned hyperparameters using the randomized search method from <em>sklearn</em> package<sup>4</sup>, with the best values obtained: <em>n_estimators</em> - 2000, <em>min_samples_split</em> - 2, <em>min_samples_leaf</em> - 2, <em>max_features</em> - auto, <em>max_depth</em> - 100 and <em>bootstrap</em> - True</p></li>
+<li><p><strong>Gradient Boosting</strong> (<em>xgm</em>) - a type of machine learning boosting. It relies on the intuition that the best possible next model, when combined with previous models, minimizes the overall prediction error; imported from <em>sklearn</em> package, with tuned hyperparameters using the grid search method from <em>sklearn</em> package, with the best values obteined: <em>learning_rate</em> - 0.1, <em>max_depth</em> - 7 and <em>n_estimators</em> - 50</p></li>
+</ol>
+<p>All methods have been implemented in Python with random states set to 42. The choice of these methods was made on the basis of their popularity, diversity and practicality, taking into account the essence of the problem under consideration.</p>
+<p>After checking the operation of the models on the test set, the following quality measures were obtained:</p>
+<table>
+<thead>
+<tr class="header">
+<th><strong>algorithm</strong></th>
+<th><strong>accuracy</strong></th>
+<th><strong>precision</strong></th>
+<th><strong>recall</strong></th>
+<th><strong>ROC AUC</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>XGBoost</strong></td>
+<td>0.8050</td>
+<td>0.806306</td>
+<td>0.836449</td>
+<td>0.802633</td>
+</tr>
+<tr class="even">
+<td><strong>Support Vector Machine</strong></td>
+<td>0.7475</td>
+<td>0.798942</td>
+<td>0.705607</td>
+<td>0.750653</td>
+</tr>
+<tr class="odd">
+<td><strong>Random Forest</strong></td>
+<td>0.7850</td>
+<td>0.801887</td>
+<td>0.794393</td>
+<td>0.784293</td>
+</tr>
+<tr class="even">
+<td><strong>Gradient Boosting</strong></td>
+<td>0.8075</td>
+<td>0.818605</td>
+<td>0.822430</td>
+<td>0.806376</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="global-explanations-3" class="section level3" number="1.4.4">
+<h3 class="hasAnchor"><span class="header-section-number">1.4.4</span> Global explanations<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#global-explanations-3" class="anchor-section"></a></h3>
+<div id="permutation-based-variable-importance" class="section level4" number="1.4.4.1">
+<h4 class="hasAnchor"><span class="header-section-number">1.4.4.1</span> Permutation-based variable importance<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#permutation-based-variable-importance" class="anchor-section"></a></h4>
+<div class="figure" style="text-align: center"><span id="fig:permutancexgb"></span>
+<img src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/1-4-03permutance_xgb.png" alt="Permutation-based variable importance plot for tuned XGBoost model. In this case, size of the bar indicates the positive impact that a feature has on accuracy of the model" width="700">
+<p class="caption">
+Figure 1.60: Permutation-based variable importance plot for tuned XGBoost model. In this case, size of the bar indicates the positive impact that a feature has on accuracy of the model
+</p>
+</div>
+<p>Our starting point was rendering a permutation-based variable importance plot from <em>DALEX</em> package using our XGBoost model to examine which variables play the biggest role in model’s decision <span class="citation">(<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#ref-dalex" role="doc-biblioref">Baniecki et al. 2020a</a>)</span>. The goal of this method is to inspect which variables have positive impact on the accuracy of the prediction. Surprisingly, all of them seemed to provide information that benefited the accuracy of the model. This, combined with a relatively small size of our dataset, led us to decision not to exclude any variables in further proceedings. However, the importance of the variables varies greatly - alcohol and sulphates together overcome all other factors combined.</p>
+</div>
+<div id="mean-absolute-shap-value" class="section level4" number="1.4.4.2">
+<h4 class="hasAnchor"><span class="header-section-number">1.4.4.2</span> Mean absolute SHAP value<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#mean-absolute-shap-value" class="anchor-section"></a></h4>
+<div class="figure" style="text-align: center"><span id="fig:meanShapxgb"></span>
+<img src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/1-4-04meanShap_xgb.png" alt="Mean absolute SHAP value for tuned XGBoost model. Size of the bar indicates how much a feature influences the prediction on average" width="700">
+<p class="caption">
+Figure 1.61: Mean absolute SHAP value for tuned XGBoost model. Size of the bar indicates how much a feature influences the prediction on average
+</p>
+</div>
+<p>In order to gain a different perspective, we examined a plot of mean absolute SHAP values of our model <span class="citation">(<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#ref-xai1-shapleyvalues" role="doc-biblioref">Scott M. Lundberg and Lee 2017</a>)</span>. SHAP method is explained in chapter <a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#break-down-and-shapley-additive-explanations-shap">Break Down and Shapley Additive Explanations (SHAP)</a>. Mean absoulte SHAP value can give us insight into which variables influence the predictions the most. Although this method differs significantly from the above-mentioned permutation-based variable importance, it provided us with a similar information on the hierarchy of importance of the variables - once again, alcohol seems to be the biggest factor, followed by sulphates. Analysing those plots encouraged us to take a closer look at the role that alcohol content plays on the prediction.</p>
+</div>
+<div id="pdp" class="section level4" number="1.4.4.3">
+<h4 class="hasAnchor"><span class="header-section-number">1.4.4.3</span> PDP<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#pdp" class="anchor-section"></a></h4>
+<div class="figure" style="text-align: center"><span id="fig:pdp"></span>
+<img src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/1-4-11pdp.png" alt="Partial Dependence Plot for all models. Lines represent the average prediction by the model if all observations had a fixed value of a feature, in this case - alcohol content" width="700">
+<p class="caption">
+Figure 1.62: Partial Dependence Plot for all models. Lines represent the average prediction by the model if all observations had a fixed value of a feature, in this case - alcohol content
+</p>
+</div>
+<p>Next, we used Partial Dependence Plot from <em>DALEX</em> package <span class="citation">(<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#ref-dalex" role="doc-biblioref">Baniecki et al. 2020a</a>)</span> to examine an overall effect the alcohol content has on our predictions. PDP tells us what would the average prediction be, if all observations had a fixed value of certain variable. This time, we used all of our models. As expected, tree-based model (XGBoost, GradientBoosting and Random Forest) behave very similarly, while SVM stands out from the rest. However, the main trend is the same - generally, stronger wines are more likely to be good than the weaker ones. Most models reach their lows at just below 10% alcohol content and plateau around 12%.</p>
+<p>We have to keep in mind that our data contains only one wine that exceeds 14% alcohol content, which may explain the flat line after that mark for tree-based models. It should be noted that this strongest wine was actually ranked as not good. The fact that the line representing SVM model keeps increasing in value throughout the whole range may indicate that this model is more prone to outliers and doesn’t capture complex interactions as well as other models. It coincides with our prior knowledge of the models and the accuracy scores they achieved.</p>
+</div>
+<div id="ale" class="section level4" number="1.4.4.4">
+<h4 class="hasAnchor"><span class="header-section-number">1.4.4.4</span> ALE<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#ale" class="anchor-section"></a></h4>
+<div class="figure" style="text-align: center"><span id="fig:ale"></span>
+<img src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/1-4-10ale.png" alt="Accumulated Local Effects Plot for all models. Lines represent how predictions change in a small range around the value of a feature, in this case - alcohol content." width="700">
+<p class="caption">
+Figure 1.63: Accumulated Local Effects Plot for all models. Lines represent how predictions change in a small range around the value of a feature, in this case - alcohol content.
+</p>
+</div>
+<p>In order to take into account possible interactions concerning our variable, we generated an ALE plot using all of the models <span class="citation">(<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#ref-xai1-ale" role="doc-biblioref">D. W. Apley and Zhu 2020</a>)</span>. This methods shows us how model predictions change in a small “window” of the feature around certain value for data instances in that window. The results turned out to be quite similar to PDP. It makes sense, considering the fact that our dataset doesn’t contain many strongly corelated variables, and the one that is related the most to alcohol, the density, doesn’t have a very significant impact on the predictions made by the models. The most visible difference is probably the way SVM behaves for the biggest alcohol values - it doesn’t seem to differ as much from the other models as in the previous plot.</p>
+</div>
+</div>
+<div id="local-explanations-3" class="section level3" number="1.4.5">
+<h3 class="hasAnchor"><span class="header-section-number">1.4.5</span> Local explanations<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#local-explanations-3" class="anchor-section"></a></h3>
+<div id="break-down-and-shapley-additive-explanations-shap" class="section level4" number="1.4.5.1">
+<h4 class="hasAnchor"><span class="header-section-number">1.4.5.1</span> Break Down and Shapley Additive Explanations (SHAP)<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#break-down-and-shapley-additive-explanations-shap" class="anchor-section"></a></h4>
+The first method that we have used for our local explanations is Shapley Additive Explanations (SHAP). It is based on another explanatory method called Break-Down, which similarly to SHAP is used to compute variables’ attribution to the model’s prediction <span class="citation">(<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#ref-xai1-breakdown" role="doc-biblioref">Staniak and Biecek 2018a</a>)</span>. Break-Down method fixes values of variables in sequence and looks at changes in label value. Moreover, as we can see in figure Figure <a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#fig:breakdownplot">1.64</a> this method is sensitive to the order of variables.
+<div class="figure" style="text-align: center"><span id="fig:breakdownplot"></span>
+<img src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/1-4-05breakdown.png" alt="BreakDown plots for one observation with different order of fixed variables. Size and color of bars indicates changes in model&#39;s predictions." width="700">
+<p class="caption">
+Figure 1.64: BreakDown plots for one observation with different order of fixed variables. Size and color of bars indicates changes in model’s predictions.
+</p>
+</div>
+All three presented plots describe the same observation with different sequences of examined variables. When critic acid was fixed as the first one, it lowered the prediction. However, the second plot presents a situation where critic acid was second fixed variable and its value showed a positive impact on rising wine’s rating. This dependency on order made it harder for us to conclude about specific wines. Fortunately
+Shapley Additive Explanations method (SHAP) resolves this issue by averaging results for different permutations of variables <span class="citation">(<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#ref-xai1-shapleyvalues" role="doc-biblioref">Scott M. Lundberg and Lee 2017</a>)</span>. As an example, you can see computed Shapley values for same observation in Figure <a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#fig:shapplot97">1.65</a> .
+<div class="figure" style="text-align: center"><span id="fig:shapplot97"></span>
+<img src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/1-4-12shap1.png" alt="Plot of Shapley Values for good wine. Size and color of bars indicates mean change in model&#39;s prediction over different orders of fixed variable." width="700">
+<p class="caption">
+Figure 1.65: Plot of Shapley Values for good wine. Size and color of bars indicates mean change in model’s prediction over different orders of fixed variable.
+</p>
+</div>
+Here our model was certain about assigning wine to good ones. Nearly all factors contributed to increasing wine’s rating. Not surprisingly, alcohol and sulphates had the biggest influence on the model’s prediction. Only free sulfur dioxide and pH had worsened the quality of wine, all of which, according to global explanations, are practically irrelevant variables to our model.
+On the contrary Figure <a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#fig:shapplot19">1.66</a> presents an observation where all attributes except volatile acidity lowered the rating of our wine. From the values of particular variables, we can see that these wines are completely different, which explains model’s distant assessments. Furthermore, exact values that our model understands as beneficial for wine start to emerge. To get a closer look we will have to use new method described in the following section.
+<div class="figure" style="text-align: center"><span id="fig:shapplot19"></span>
+<img src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/1-4-13shap2.png" alt="Plot of Shapley Values for bad wine." width="700">
+<p class="caption">
+Figure 1.66: Plot of Shapley Values for bad wine.
+</p>
+</div>
+</div>
+<div id="lime" class="section level4" number="1.4.5.2">
+<h4 class="hasAnchor"><span class="header-section-number">1.4.5.2</span> LIME<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#lime" class="anchor-section"></a></h4>
+<p>In order to look at the explainability of individual predictions, the LIME method from <em>DALEX</em> package was used <span class="citation">(<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#ref-dalex" role="doc-biblioref">Baniecki et al. 2020a</a>)</span>. When looking at individual visualizations, it is easy to see that extreme alcohol values have the greatest impact on the prediction value. This is clearly visible on the example of incorrectly classified observations - in a significant number of cases it is the non-standard value of alcohol that largely determines the incorrect prediction. The situation is well illustrated by visualizations generated on the basis of two observations which all of our models misclassified.</p>
+<div class="figure" style="text-align: center"><span id="fig:lime1"></span>
+<img src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/1-4-06LIME1.png" alt=" Visualization of LIME method for wine incorrectly classified as bad. Left section represents prediction probability. Middle section displays importance of features and right section their exact values. Blue color indicates that variable is supporting class 0 (bad wine) and orange that variable is supporting class 1 (good wine)." width="700">
+<p class="caption">
+Figure 1.67:  Visualization of LIME method for wine incorrectly classified as bad. Left section represents prediction probability. Middle section displays importance of features and right section their exact values. Blue color indicates that variable is supporting class 0 (bad wine) and orange that variable is supporting class 1 (good wine).
+</p>
+</div>
+<div class="figure" style="text-align: center"><span id="fig:lime2"></span>
+<img src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/1-4-07LIME2.png" alt=" Visualization of LIME method for wine incorrectly classified as good." width="700">
+<p class="caption">
+Figure 1.68:  Visualization of LIME method for wine incorrectly classified as good.
+</p>
+</div>
+<p>However, in this case, alcohol does not always dominate, and the prediction result for the XGBoost model is indeed a component of many elements. However, it has to be considered that the <em>LIME</em> method in this case takes into account only certain automatically selected intervals, which, when combined, do not fully represent the essence of the algorithm.</p>
+</div>
+<div id="ceteris-paribus" class="section level4" number="1.4.5.3">
+<h4 class="hasAnchor"><span class="header-section-number">1.4.5.3</span> Ceteris Paribus<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#ceteris-paribus" class="anchor-section"></a></h4>
+<p>Analyzing results from LIME brought to light yet another issue. Is it possible to change wine’s rating by altering the alcohol content? Answers to this question were provided by a method called Ceteris Paribus. “Ceteris paribus” is a Latin phrase meaning “other things held constant” which accurately describes the main concept of method. Ceteris Paribus illustrates the response of a model to changing a single variable while fixing the values of others. As an example, we will use observation from the previous section which our model incorrectly
+labeled as the bad one. We quietly assumed that it was due to low alcohol content, but now we can verify our thesis.</p>
+<div class="figure" style="text-align: center"><span id="fig:cp1"></span>
+<img src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/1-4-08cp1.png" alt="Ceteris-paribus profile for all models. Lines represent how the models&#39; predictions change over different alcohol contents while keeping other variables fixed. Dots represents actual value of alcohol content in examined misclassified wine." height="300">
+<p class="caption">
+Figure 1.69: Ceteris-paribus profile for all models. Lines represent how the models’ predictions change over different alcohol contents while keeping other variables fixed. Dots represents actual value of alcohol content in examined misclassified wine.
+</p>
+</div>
+Indeed if our wine was less than a half percent stronger, the model would properly give it a higher rating. However, rising alcohol levels in not always an answer. For instance, very strong wine with 14.7% alcohol presented in Figure <a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#fig:cp2">1.70</a> would benefit from a reduction of alcohol content.
+<div class="figure" style="text-align: center"><span id="fig:cp2"></span>
+<img src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/1-4-09cp2.png" alt="Ceteris-paribus profile for alcohol content in a very strong wine." height="300">
+<p class="caption">
+Figure 1.70: Ceteris-paribus profile for alcohol content in a very strong wine.
+</p>
+</div>
+</div>
+</div>
+<div id="confrontation-with-science" class="section level3" number="1.4.6">
+<h3 class="hasAnchor"><span class="header-section-number">1.4.6</span> Confrontation with science<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#confrontation-with-science" class="anchor-section"></a></h3>
+<p>The subject of the quality of wines in relation to their alcohol content has been studied many times before by other scientists and enologists. The topic was covered, among others, on a post on <em>Cult wines</em> blog <span class="citation">(<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#ref-1-4-wines-blog" role="doc-biblioref">England 2019</a>)</span>. In 2019, the author pointed that “It is true that alcohol in wine tends to draw out more intense, bold flavours, so the higher the alcohol level, the fuller the body.” Certainly, the phenomenon is also confirmed by the popular fact of preferences of esteemed former wine critic Robert Parker, who was well known for awarding higher scores to higher alcohol wines. On the other hand, lower alcohol wines tend to offer greater balance and pair better with foods. Hence, too much content is also not an advantage in terms of quality.</p>
+<p>The phenomenon was also examined by the newspaper the Seattle Times, which published an article in 2003 entitled <em>Does a higher alcohol content mean it’s a better drinking wine?</em> <span class="citation">(<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#ref-1-4-wines-seattle" role="doc-biblioref">Gregutt 2003</a>)</span>. The expert emphasizes that higher alcohol is an indication of better ripeness at harvest and fermentation to complete or near-complete dryness. With time, the wines are also getting stronger, which is the result of better vineyard practices, letting the grapes get more “hang time” and more efficient yeasts, which definitely has a positive effect on the quality. Here, however, the argument for not too high alcohol content is also emphasized, due to the fact that wines with more than 15 percent are almost never ageworthy. The high alcohol throws the balance off and is often accompanied by too much oak and too much tannin. These wines are also hard to drink, as they do not match well with most foods.</p>
+<p>It is also worth comparing an article from the <em>Decanter</em> website <span class="citation">(<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#ref-1-4-wines-decanter" role="doc-biblioref">Jefford 2010</a>)</span> with the results of our study. As a person well acquainted with the subject, the expert considers the alcohol threshold of a good wine, coming to a conclusion consistent with the results of our calculations.</p>
+<p>Professional research was conducted in 2015. A group of Portugese experts conducted a thorough research, the result of which was the article <em>From Sugar of Grape to Alcohol of Wine: Sensorial Impact of Alcohol in Wine</em> <span class="citation">(<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#ref-1-4-wines-jordao" role="doc-biblioref">Jordão et al. 2015</a>)</span>. They indicated in it that the quality of grapes, as well as wine quality, flavor, stability, and sensorial characteristics depends on the content and composition of several different groups of compounds from grapes. One of these groups of compounds are sugars and consequently the alcohol content quantified in wines after alcoholic fermentation. During grape berry ripening, sucrose transported from the leaves is accumulated in the berry vacuoles as glucose and fructose resulting in a fuller taste of a final wine.</p>
+<p>The idea of a threshold of an alcohol content, beyond which wines lose their quality, is a common theme in literature dedicated to the topic. There is evidence suggesting that wines that have more than 14.5% of alcohol start to come off as herbaceous instead of fruity <span class="citation">(<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#ref-1-4-wines-goldner" role="doc-biblioref">GOLDNER et al. 2009</a>)</span>. The research states that the sensory perception of the aroma
+changed dramatically with the level of ethanol content in the wine, but the change isn’t consistent among all chemical compounds.</p>
+<p>Another very interesting topic is the idea of reducing the alcohol content in wine after initial production process <span class="citation">(<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#ref-1-4-wines-jordao" role="doc-biblioref">Jordão et al. 2015</a>)</span>. Motivation behind such actions is to try to keep all the good aromas and qualities associated with stronger wines, while simultaneously lowering excessive alcohol which causes bitter or sour tastes. Such attempts ended in mixed results, but evidence suggests that it may be possible to lower alcohol content by one percentage point without losing many aromas.</p>
+</div>
+<div id="summary-1" class="section level3" number="1.4.7">
+<h3 class="hasAnchor"><span class="header-section-number">1.4.7</span> Summary<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#summary-1" class="anchor-section"></a></h3>
+<p>The analysis of the results of modern methods of explainable artificial intelligence showed a relatively unambiguous conclusion - taking into account the proven data set of popular wines assessed by experts, the alcohol content definitely has a large impact on the average rating of wines. Despite taking into account many different chemical factors, as well as the variety of black box models and the differences between individual observations, alcohol is a factor that stands out from other predictors. This result is evidenced not only by the high correlation and simple conclusions from the visualizations, but also by the results of the algorithms explaining the results of the models used. However, the methodology has produced less obvious conclusions - although higher alcohol content is associated with higher alcohol quality (at least in a pseudo-objective sense), there is a threshold at which this property reverses. These considerations are the result of measuring not only one or two approaches, but a total of research based on as many as seven methods. It is a good argument to appreciate both them and modern solutions of explainable artificial intelligence. Indeed, the results of information and mathematical analysis are also consistent with what we can observe in nature - the effects of the calculations made are consistent with previous research related to the topic, and not necessarily based on methods related to the field of data science.</p>
+</div>
+<div id="conclusions" class="section level3" number="1.4.8">
+<h3 class="hasAnchor"><span class="header-section-number">1.4.8</span> Conclusions<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#conclusions" class="anchor-section"></a></h3>
+<p>The experiment is undoubtedly successful and with a high degree of certainty confirms two facts: firstly, the quality of the wines is dependent on their higher alcohol content, but up to a certain threshold and secondly, modern methods of explainable artificial intelligence provides us valuable results that bring new valuable information about the black box models, which at the same time are consistent with the nature of the data sets on which they were made. Different approaches provide us with various useful information and it is difficult to indicate better or worse solutions - the seven methods mentioned complement each other in their own way, but each allows us to look at the problem of analysis from a different perspective.</p>
+<p>Leaving aside our succesful implementation of XAI solutions, one must bear in mind, that the results of the experiment need to be put in a certain perspective. It must be remembered that the world of wines is a very diverse one. For example, artificially fortified wines like port wine or sherry should be considered separately. The discussed data set concerns only a certain group of wines and we don’t know enoguh about the experts or conditions of the tastings to call the data entirely representative. Therefore, we should remain cautious when drawing any far-reaching conclusions. Nevertheless, the conducted research approximates the idea of the overall effect of alcohol on the quality of wine and confirms previous research by experts from a biochemical point of view.</p>
+
+</div>
+</div>
+<h3 class="hasAnchor">References<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-wine.html#section-" class="anchor-section"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-xai1-ale" class="csl-entry">
+Apley, D. W., &amp; Zhu, J. (2020). <span class="nocase">Visualizing the effects of predictor variables in black box supervised learning models</span>. <em>Journal of the Royal Statistical Society Series B</em>, <em>82</em>(4), 1059–1086. <a href="https://doi.org/10.1111/rssb.12377">https://doi.org/10.1111/rssb.12377</a>
+</div>
+<div id="ref-dalex" class="csl-entry">
+Baniecki, H., Kretowicz, W., Piatyszek, P., Wisniewski, J., &amp; Biecek, P. (2020a). <span class="nocase">dalex: Responsible Machine Learning with Interactive Explainability and Fairness in Python</span>. <em>arXiv:2012.14406</em>. <a href="https://arxiv.org/abs/2012.14406">https://arxiv.org/abs/2012.14406</a>
+</div>
+<div id="ref-1-4-wines-blog" class="csl-entry">
+England, R. (2019). Wine’s alcohol levels explained. <a href="https://www.wineinvestment.com/wine-blog/2019/05/wines-alcohol-levels-explained?fbclid=IwAR3xpQITEQZrQUPPaEt7-DbFHmvHE559-iVuLsgS6dDinOeWrl04MZiglbM">https://www.wineinvestment.com/wine-blog/2019/05/wines-alcohol-levels-explained?fbclid=IwAR3xpQITEQZrQUPPaEt7-DbFHmvHE559-iVuLsgS6dDinOeWrl04MZiglbM</a>.
+</div>
+<div id="ref-1-4-wines-goldner" class="csl-entry">
+GOLDNER, M. C., ZAMORA, M. C., DI LEO LIRA, P., GIANNINOTO, H., &amp; BANDONI, A. (2009). EFFECT OF ETHANOL LEVEL IN THE PERCEPTION OF AROMA ATTRIBUTES AND THE DETECTION OF VOLATILE COMPOUNDS IN RED WINE. <em>Journal of sensory studies</em>, <em>24</em>(2), 243–257.
+</div>
+<div id="ref-1-4-wines-seattle" class="csl-entry">
+Gregutt, P. (2003). Does a higher alcohol content mean it’s a better drinking wine? <em>The Seattle Times</em>. <a href="https://archive.seattletimes.com/archive/?date=20031008&amp;slug=wineqanda08&amp;fbclid=IwAR3lBlpdwUCUWjWKaH4Px21b9fJQwBT0aMTa8bNWCbx4ipo4otWzvR9_mTc">https://archive.seattletimes.com/archive/?date=20031008&amp;slug=wineqanda08&amp;fbclid=IwAR3lBlpdwUCUWjWKaH4Px21b9fJQwBT0aMTa8bNWCbx4ipo4otWzvR9_mTc</a>
+</div>
+<div id="ref-1-4-wines-decanter" class="csl-entry">
+Jefford, A. (2010). Alcohol levels: The balancing act. <a href="https://www.decanter.com/features/alcohol-levels-the-balancing-act-246426/?fbclid=IwAR0bsIWug6-7l77rxb01Va8P1F_hVkaUTacNtlF-V-wRXb1HA3rJXpl74Pw">https://www.decanter.com/features/alcohol-levels-the-balancing-act-246426/?fbclid=IwAR0bsIWug6-7l77rxb01Va8P1F_hVkaUTacNtlF-V-wRXb1HA3rJXpl74Pw</a>.
+</div>
+<div id="ref-1-4-wines-jordao" class="csl-entry">
+Jordão, A. M., Vilela, A., &amp; Cosme, F. (2015). From sugar of grape to alcohol of wine: Sensorial impact of alcohol in wine. <em>Beverages</em>, <em>1</em>(4), 292–310. <a href="https://doi.org/10.3390/beverages1040292">https://doi.org/10.3390/beverages1040292</a>
+</div>
+<div id="ref-xai1-shapleyvalues" class="csl-entry">
+Lundberg, Scott M., &amp; Lee, S.-I. (2017). A unified approach to interpreting model predictions. In I. Guyon, U. V. Luxburg, S. Bengio, H. Wallach, R. Fergus, S. Vishwanathan, &amp; R. Garnett (Eds.), <em>Advances in neural information processing systems 30</em> (pp. 4765–4774). Montreal: Curran Associates. <a href="http://papers.nips.cc/paper/7062-a-unified-approach-to-interpreting-model-predictions.pdf">http://papers.nips.cc/paper/7062-a-unified-approach-to-interpreting-model-predictions.pdf</a>
+</div>
+<div id="ref-xai1-breakdown" class="csl-entry">
+Staniak, M., &amp; Biecek, P. (2018a). Explanations of model predictions with live and breakDown packages.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="https://mi2-education.github.io/2021L-WB-Book/coronary-artery-disease-is-it-worth-trusting-ml-when-it-comes-to-our-health.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="https://mi2-education.github.io/2021L-WB-Book/xai1-explainable-hotels.html" class="navigation navigation-next " aria-label="Next page" style="margin-right: 17px;"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/app.min.js.pobrane"></script>
+<script src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/lunr.js.pobrane"></script>
+<script src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/clipboard.min.js.pobrane"></script>
+<script src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/plugin-search.js.pobrane"></script>
+<script src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/plugin-sharing.js.pobrane"></script>
+<script src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/plugin-fontsettings.js.pobrane"></script>
+<script src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/plugin-bookdown.js.pobrane"></script>
+<script src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/jquery.highlight.js.pobrane"></script>
+<script src="./Red wine mystery_ using explainable AI to inspect factors behind wine quality _ Case Studies_files/plugin-clipboard.js.pobrane"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/mini-pw/2021L-WB-Book/edit/master/1-4-wines.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["book.pdf", "book.epub"],
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+
+
+</body></html>

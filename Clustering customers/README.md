@@ -1,0 +1,1 @@
+The goal of this project is to use data abot online sessions on the shop website to inspect whether we can extract distinct groups of customers based on their behaviour and shopping intentions, which could be useful in furher development of the webste and the whole brand.
