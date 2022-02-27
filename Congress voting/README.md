@@ -1,0 +1,1 @@
+An educational data exploration and machine learning project concerning analysis of voting patterns of US congresmen in 1986 and simple classification task. Summary slides and more detailed python notebook  in subfolder. 
